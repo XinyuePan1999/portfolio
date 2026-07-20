@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>潘新月 · 产品设计师作品集</title>
+<meta name="description" content="潘新月，产品设计师。两年独立主导多人语聊核心模块，从界面到布局规范与外观设计专利。系统化设计 · 数据驱动取舍 · 长期主导。">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<!-- 社交分享卡片（微信 / LinkedIn / 脉脉） -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="潘新月 · 产品设计师作品集">
+<meta property="og:description" content="两年独立主导多人语聊核心模块，从界面到布局规范与外观设计专利。">
+<meta property="og:image" content="assets/img/hero-portrait.webp">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- 样式：字体 → 变量 → 基础 → 动效 → 本页专属 -->
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/motion.css">
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/plus-jakarta-sans-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/caveat-700.woff2" crossorigin>
+<style>
+  /* ============================================================
+     首页专属样式。通用变量见 assets/css/tokens.css
+     ============================================================ */
+
+  /* ---------- 草稿标记 ----------
+     <body class="draft"> 时显示。确认无误后删掉 class="draft"，
+     顶部提示条和所有黄色虚线框一并消失。 */
+  .draft-bar{display:none}
+  body.draft .draft-bar{
+    display:block;background:var(--ink);color:#fff;font-size:13.5px;line-height:1.7;padding:12px 0;
+  }
+  body.draft .draft-bar b{color:var(--gold)}
+  body.draft .draft-bar .wrap{display:flex;gap:14px;align-items:flex-start}
+  body.draft .draft-bar .tag{
+    flex-shrink:0;background:var(--gold);color:var(--ink);font-weight:800;font-size:11px;
+    letter-spacing:.06em;padding:3px 9px;border-radius:6px;margin-top:3px;
+  }
+  /* 用 box-shadow 画虚框而不是 outline+offset —— outline-offset 会撑出横向溢出 */
+  body.draft [data-draft]{
+    position:relative;border-radius:4px;
+    box-shadow:0 0 0 7px var(--bg),0 0 0 8.5px var(--gold);
+  }
+  body.draft [data-draft]::after{
+    /* right 不能为负值——绝对定位元素越界会撑出横向溢出 */
+    content:attr(data-draft);position:absolute;top:-10px;right:0;
+    background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;letter-spacing:.05em;
+    padding:2px 8px;border-radius:5px;white-space:nowrap;pointer-events:none;
+  }
+
+  /* ---------- 悬浮导航 ---------- */
+  header{position:sticky;top:0;z-index:100;padding:14px 0 0}
+  .nav{
+    background:rgba(255,255,255,.9);backdrop-filter:blur(14px);
+    border-radius:26px;box-shadow:0 10px 40px -18px rgba(0,0,0,.22);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 14px 12px 24px;
+  }
+  .brand .name{font-family:var(--font-hand);font-weight:700;font-size:30px;line-height:1;white-space:nowrap}
+  .nav-right{display:flex;align-items:center;gap:34px}
+  .nav-links{display:flex;gap:30px;font-size:15px;font-weight:500}
+  .nav-links a{position:relative;transition:color .2s var(--ease)}
+  .nav-links a::after{
+    content:"";position:absolute;left:0;right:0;bottom:-5px;height:2px;background:var(--gold);
+    transform:scaleX(0);transform-origin:100% 50%;transition:transform .4s var(--ease);
+  }
+  .nav-links a:hover{color:var(--gold)}
+  .nav-links a:hover::after{transform:scaleX(1);transform-origin:0 50%}
+  .kontakt{
+    background:var(--ink);color:#fff;font-weight:600;font-size:15px;padding:12px 26px;border-radius:22px;
+    transition:background .25s var(--ease),box-shadow .35s var(--ease);
+  }
+  .kontakt:hover{background:#000;box-shadow:0 12px 28px -12px rgba(0,0,0,.55)}
+  @media(max-width:820px){.nav-links{display:none}}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:16px 0 0}
+  .hero-panel{
+    position:relative;background:var(--panel);
+    min-height:min(76svh,660px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    overflow:hidden;padding:64px 24px 96px;
+  }
+  .hero-panel::before{
+    content:"";position:absolute;inset:0;
+    background-image:var(--dots);background-size:15px 15px;
+    -webkit-mask-image:radial-gradient(ellipse 60% 60% at 50% 46%,#000 0%,transparent 72%);
+            mask-image:radial-gradient(ellipse 60% 60% at 50% 46%,#000 0%,transparent 72%);
+    opacity:.9;
+  }
+  /* padding-bottom 为悬在宝丽来下方的签名预留空间 */
+  .hero-title{
+    position:relative;z-index:2;display:flex;align-items:center;justify-content:center;
+    gap:26px;flex-wrap:wrap;padding-bottom:76px;
+  }
+  .hero-title h1{
+    font-size:clamp(48px,9vw,104px);font-weight:800;letter-spacing:-.04em;line-height:.95;
+    transition:transform .6s var(--ease);
+  }
+  .hero-title:has(.polaroid:hover) .t-left{transform:translateX(-34px)}
+  .hero-title:has(.polaroid:hover) .t-right{transform:translateX(34px)}
+  .hero-intro{position:relative;z-index:2;text-align:center;margin-top:14px}
+  .hero-intro .who{font-size:clamp(19px,2.4vw,24px);font-weight:800;letter-spacing:-.02em}
+  .hero-intro .what{color:var(--muted);font-size:16px;margin-top:10px;line-height:1.7}
+  .hero-intro .what b{color:var(--ink);font-weight:700}
+  .scroll-down{
+    position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;
+    width:52px;height:52px;border-radius:50%;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    animation:bob 1.8s var(--ease) infinite;transition:color .25s var(--ease);
+  }
+  .scroll-down:hover{color:var(--gold)}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+  .polaroid{
+    position:relative;display:block;
+    width:150px;background:#fff;border-radius:14px;padding:8px 8px 22px;
+    box-shadow:0 26px 50px -20px rgba(0,0,0,.4);
+    flex-shrink:0;will-change:transform;
+    --extra-transform:rotate(10deg);
+  }
+  .polaroid:hover{--extra-transform:rotate(0deg) scale(1.06)}
+  .polaroid .ph{width:100%;aspect-ratio:1/1;border-radius:8px;overflow:hidden}
+  .polaroid .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .polaroid .sig{
+    position:absolute;left:50%;top:100%;margin-top:7px;transform:translateX(-50%);
+    width:98%;height:auto;z-index:4;pointer-events:none;
+  }
+  /* 窄屏：缩小三件套让它们留在同一行——一旦换行，签名会压住 ":)" */
+  @media(max-width:520px){
+    .hero-title{gap:14px;padding-bottom:60px}
+    .hero-title h1{font-size:40px}
+    .polaroid{width:104px;padding:6px 6px 18px}
+    .hero-panel{padding:48px 18px 80px}
+  }
+
+  /* ---------- 主案例（整宽）---------- */
+  .feature{
+    display:grid;grid-template-columns:1.05fr .95fr;margin-top:52px;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius-xl);
+    overflow:hidden;transition:transform .45s var(--ease),box-shadow .45s var(--ease);
+  }
+  .feature:hover{transform:translateY(-6px);box-shadow:0 34px 66px -34px rgba(0,0,0,.32)}
+  .feature .body{padding:52px 48px;display:flex;flex-direction:column;justify-content:center}
+  .feature .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .feature .chips span{font-size:12px;font-weight:700;color:var(--gold-deep);background:var(--gold-soft);padding:5px 11px;border-radius:20px}
+  .feature h3{font-size:clamp(24px,3vw,32px);line-height:1.25}
+  .feature p{color:var(--muted);font-size:16px;line-height:1.75;margin-top:16px}
+  .feature .nums{display:flex;gap:34px;margin-top:30px;flex-wrap:wrap}
+  .feature .nums b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1}
+  .feature .nums span{display:block;font-size:12.5px;color:var(--muted);margin-top:7px}
+  .feature .go{margin-top:32px;color:var(--gold);font-weight:700;font-size:15.5px;display:inline-flex;align-items:center;gap:8px}
+  .feature .go svg{transition:transform .35s var(--ease)}
+  .feature:hover .go svg{transform:translate(3px,-3px)}
+  @media(max-width:860px){.feature{grid-template-columns:1fr}.feature .body{padding:38px 28px}}
+
+  /* ---------- 语音厅舞台线框（案例封面）----------
+     产品截图需脱敏，用线框示意代替；动效对应真实的空间逻辑：
+     主咖呼吸 → 声波扩散 → 麦位依次点亮 */
+  .shot{
+    position:relative;background:linear-gradient(135deg,#101014,#2a2530,#413c4a);
+    min-height:380px;display:flex;align-items:center;justify-content:center;
+    padding:38px 24px;overflow:hidden;
+  }
+  .shot::before{
+    content:"";position:absolute;inset:0;
+    background-image:var(--dots-dark);background-size:18px 18px;
+  }
+  .room{
+    position:relative;z-index:1;width:min(220px,60%);aspect-ratio:9/13;border-radius:14px;
+    background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.14);
+  }
+  .rm{position:absolute;border-radius:8px}
+  .rm.subtitle{top:7%;left:8%;right:8%;height:6%;background:rgba(255,255,255,.12);border:1px dashed rgba(255,255,255,.3);overflow:hidden}
+  .rm.subtitle::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);
+    transform:translateX(-100%);
+  }
+  .rm.host{
+    top:20%;left:50%;width:40%;aspect-ratio:1;border-radius:50%;
+    background:linear-gradient(135deg,var(--gold),var(--gold-deep));
+    box-shadow:0 0 38px rgba(230,161,0,.42);
+    transform:translateX(-50%);
+  }
+  .rm.wave{
+    top:15%;left:50%;width:56%;aspect-ratio:1;border-radius:50%;
+    border:2px solid rgba(230,161,0,.3);
+    transform:translateX(-50%) scale(1);opacity:0;
+  }
+  .rm.mic{width:15%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28)}
+  .rm.slot{bottom:9%;left:8%;width:34%;height:11%;background:rgba(230,161,0,.15);border:1px dashed rgba(230,161,0,.45)}
+  .shot .cap{
+    position:absolute;left:0;right:0;bottom:16px;z-index:1;text-align:center;
+    font-size:11.5px;color:rgba(255,255,255,.42);letter-spacing:.03em;
+  }
+
+  /* 只在进入视口后播放，离开就停——不做无人观看的动画 */
+  .room.live .rm.host{animation:breathe 3.4s var(--ease) infinite}
+  .room.live .rm.wave{animation:ripple 3.4s var(--ease) infinite}
+  .room.live .rm.wave.w2{animation-delay:1.13s}
+  .room.live .rm.wave.w3{animation-delay:2.26s}
+  .room.live .rm.mic{animation:blip 3.4s var(--ease) infinite}
+  .room.live .rm.mic.m2{animation-delay:.34s}
+  .room.live .rm.mic.m3{animation-delay:.68s}
+  .room.live .rm.subtitle::after{animation:sweep 3.4s var(--ease) infinite}
+
+  @keyframes breathe{
+    0%,100%{transform:translateX(-50%) scale(1);box-shadow:0 0 38px rgba(230,161,0,.42)}
+    45%    {transform:translateX(-50%) scale(1.07);box-shadow:0 0 54px rgba(230,161,0,.62)}
+  }
+  @keyframes ripple{
+    0%  {transform:translateX(-50%) scale(.72);opacity:0}
+    18% {opacity:.85}
+    100%{transform:translateX(-50%) scale(1.5);opacity:0}
+  }
+  @keyframes blip{
+    0%,72%,100%{background:rgba(255,255,255,.1);transform:scale(1)}
+    80%        {background:rgba(230,161,0,.42);transform:scale(1.16)}
+  }
+  @keyframes sweep{0%,55%{transform:translateX(-100%)}85%,100%{transform:translateX(100%)}}
+
+  /* ---------- 待补案例位 ---------- */
+  .soon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:22px}
+  .soon{
+    border:1.5px dashed var(--line);border-radius:var(--radius);padding:34px 28px;
+    min-height:190px;display:flex;flex-direction:column;justify-content:center;
+    transition:border-color .35s var(--ease),background .35s var(--ease);
+  }
+  .soon:hover{border-color:var(--gold);background:rgba(230,161,0,.04)}
+  .soon .n{font-family:var(--serif);font-style:italic;font-size:30px;color:#c9c6c0;font-weight:700}
+  .soon h4{font-size:17px;font-weight:800;margin-top:10px;color:#9a9791}
+  .soon p{font-size:14px;color:#adaaa4;line-height:1.65;margin-top:8px}
+  @media(max-width:760px){.soon-grid{grid-template-columns:1fr}}
+
+  /* ---------- 关于 ---------- */
+  .about-panel{background:var(--panel);border-radius:var(--radius-xl);padding:74px 60px}
+  .about-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+  .about-grid h2{margin:16px 0 22px}
+  .about-grid p{color:#3f3d39;font-size:16.5px;line-height:1.85}
+  .about-grid p + p{margin-top:18px}
+  /* 宽度用 width:100% + max-width，避免 max-width:100% 相对于由自身撑开的父级循环求值 */
+  .about-photo{justify-self:center;width:100%;max-width:330px}
+  .about-square{
+    width:100%;max-width:330px;aspect-ratio:1/1;border-radius:18px;overflow:hidden;
+    box-shadow:0 26px 50px -20px rgba(0,0,0,.4);will-change:transform;
+  }
+  .about-square img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s var(--ease)}
+  .about-photo:hover .about-square img{transform:scale(1.06)}
+  /* minmax(0,1fr)：单纯 1fr 的轨道下限是内容 min-content，会被固定宽度撑破窄屏 */
+  @media(max-width:820px){.about-grid{grid-template-columns:minmax(0,1fr);gap:36px}.about-panel{padding:48px 28px}}
+
+  /* ---------- 能力 ---------- */
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px}
+  .svc{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:34px 30px;
+    transition:transform .4s var(--ease),box-shadow .4s var(--ease);
+  }
+  .svc:hover{transform:translateY(-6px);box-shadow:0 24px 48px -26px rgba(0,0,0,.28)}
+  .svc .ic{
+    width:46px;height:46px;border-radius:14px;background:var(--gold-soft);color:var(--gold-deep);
+    display:flex;align-items:center;justify-content:center;margin-bottom:20px;
+    transition:transform .45s var(--ease-spring);
+  }
+  .svc:hover .ic{transform:rotate(-8deg) scale(1.08)}
+  .svc h4{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-bottom:12px}
+  .svc p{color:var(--muted);font-size:15px;line-height:1.75}
+  .svc.hl{background:var(--gold);border-color:var(--gold)}
+  .svc.hl .ic{background:rgba(0,0,0,.12);color:var(--ink)}
+  .svc.hl p{color:rgba(20,20,20,.82)}
+  @media(max-width:760px){.svc-grid{grid-template-columns:1fr}}
+
+  /* ---------- 方法 ---------- */
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:60px}
+  .step .sn{font-family:var(--serif);font-style:italic;font-size:32px;color:var(--gold);font-weight:700}
+  .step .st{font-size:16px;font-weight:800;margin:12px 0 8px}
+  .step .sd{font-size:13px;color:rgba(255,255,255,.6);line-height:1.6}
+  .method-src{margin-top:52px;padding-top:26px;border-top:1px solid rgba(255,255,255,.14);font-size:14px;color:rgba(255,255,255,.5)}
+  .method-src a{color:var(--gold);font-weight:700}
+  @media(max-width:860px){.steps{grid-template-columns:1fr 1fr;gap:30px}}
+
+  /* ---------- 联系 ---------- */
+  .contact-panel{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius-xl);
+    padding:60px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;
+  }
+  .contact-left h2{margin:16px 0 20px}
+  .contact-left p{color:var(--muted);font-size:16.5px;max-width:40ch}
+  .contact-deco{
+    margin-top:40px;height:120px;background-image:var(--dots);background-size:15px 15px;
+    -webkit-mask-image:linear-gradient(90deg,#000,transparent);mask-image:linear-gradient(90deg,#000,transparent);
+  }
+  .contact-rows{display:flex;flex-direction:column;gap:14px}
+  .crow{
+    display:flex;align-items:center;gap:16px;background:#f6f5f3;border:1px solid var(--line);
+    border-radius:16px;padding:18px 20px;transition:border-color .3s var(--ease),transform .3s var(--ease);
+  }
+  .crow:hover{border-color:var(--gold);transform:translateX(4px)}
+  .crow .ic{
+    flex-shrink:0;width:42px;height:42px;border-radius:12px;background:var(--card);
+    border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold-deep);
+  }
+  .crow .txt{min-width:0}
+  .crow .txt b{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .crow .txt span{display:block;font-size:16px;font-weight:700;margin-top:3px;word-break:break-all}
+  .copy{
+    margin-left:auto;flex-shrink:0;background:var(--ink);color:#fff;border:none;border-radius:11px;
+    padding:10px 16px;font-size:13.5px;font-weight:700;cursor:pointer;
+    transition:background .2s var(--ease),transform .2s var(--ease);
+  }
+  .copy:hover{background:#000;transform:translateY(-1px)}
+  .copy.done{background:var(--verified)}
+  @media(max-width:820px){.contact-panel{grid-template-columns:1fr;gap:36px;padding:40px 26px}}
+
+  /* ---------- Footer ---------- */
+  footer{text-align:center;padding:70px 0 60px}
+  .foot-logo{font-family:var(--font-hand);font-size:34px;font-weight:700}
+  .foot-tag{color:var(--muted);font-size:15px;margin-top:4px}
+  .foot-nav{display:flex;gap:28px;justify-content:center;margin-top:28px;font-size:15px;font-weight:500;flex-wrap:wrap}
+  .foot-nav a{color:var(--muted);transition:color .2s var(--ease)}
+  .foot-nav a:hover{color:var(--ink)}
+  .foot-copy{margin-top:32px;font-size:13px;color:#a5a29d}
+</style>
+</head>
+<body class="draft">
+
+<!-- ============ 草稿提示条（确认完删掉 <body> 上的 class="draft" 即整体消失）============ -->
+<div class="draft-bar">
+  <div class="wrap">
+    <span class="tag">草稿</span>
+    <div>
+      页面里带黄色虚线框的地方是<b>代写的草稿，需要你本人核对</b>——尤其是邮箱、职级描述和自我介绍，
+      发出去之前请逐条改成真实信息。全部确认后，把 <b>&lt;body class="draft"&gt;</b> 里的 <b>class="draft"</b> 删掉，标记就全部消失了。
+    </div>
+  </div>
+</div>
+
+<!-- ============ 导航 ============ -->
+<header>
+  <div class="wrap">
+    <nav class="nav">
+      <div class="brand"><div class="name vt-brand">Xinyue Pan</div></div>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="#cases">案例</a>
+          <a href="#about">关于</a>
+          <a href="#skills">能力</a>
+          <a href="#method">方法</a>
+        </div>
+        <a href="#contact" class="kontakt">联系我</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ Hero ============ -->
+<section class="hero">
+  <div class="hero-panel tilt-scene" data-tilt-zone data-magnetic-zone>
+    <div class="hero-title">
+      <h1 class="t-left">Hello!</h1>
+      <a class="polaroid magnetic tilt" href="gallery.html" aria-label="打开照片集" data-magnetic="10" data-tilt="9">
+        <div class="ph"><img src="assets/img/hero-photo.webp" alt="潘新月" width="420" height="420" fetchpriority="high"></div>
+        <img class="sig" src="assets/img/signature.webp" alt="" width="600" height="259" aria-hidden="true">
+      </a>
+      <h1 class="t-right">:)</h1>
+    </div>
+    <div class="hero-intro">
+      <div class="who">潘新月 · 产品设计师</div>
+      <p class="what">
+        两年独立主导多人语聊核心模块 · <b>外观设计专利第一发明人</b><br>
+        把一次设计判断，做成一套别人能反复调用的规则。
+      </p>
+    </div>
+    <a href="#cases" class="scroll-down" aria-label="向下查看案例">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============ 案例 ============ -->
+<section id="cases">
+  <div class="wrap" data-reveal>
+    <span class="kicker">案例</span>
+    <h2 style="margin-top:20px;max-width:20ch" data-words>一个模块，我主导它一路进化。</h2>
+    <p class="lead">比起铺开十个浅的项目，我更想让你看清一件事我能扛多久、扛到什么层级。下面是主案例的完整过程。</p>
+  </div>
+
+  <div class="wrap">
+    <a class="feature" href="case-voice-layout.html" data-reveal>
+      <div class="shot">
+        <div class="room" data-room role="img" aria-label="语音厅主咖放大布局线框示意：顶部字幕条、中央放大的主咖位与声波、右侧等距麦位、底部玩法入口">
+          <span class="rm subtitle"></span>
+          <span class="rm wave w1"></span>
+          <span class="rm wave w2"></span>
+          <span class="rm wave w3"></span>
+          <span class="rm host"></span>
+          <span class="rm mic m1" style="top:56%;right:9%"></span>
+          <span class="rm mic m2" style="top:69%;right:9%"></span>
+          <span class="rm mic m3" style="top:82%;right:9%"></span>
+          <span class="rm slot"></span>
+        </div>
+        <div class="cap">主咖放大布局 · 线框示意（产品截图已脱敏）</div>
+      </div>
+      <div class="body">
+        <div class="chips"><span>系统设计</span><span>2 年主导</span><span>外观设计专利</span></div>
+        <h3>语音厅布局系统</h3>
+        <p>
+          多人语聊业务唯一设计师，2024.3 → 2026.4 独立主导四个阶段——
+          从一个能用的容器，到写进规范、拿下专利、能长出全场景玩法的空间系统。
+        </p>
+        <div class="nums">
+          <div><b data-count="1.9" data-decimals="1" data-prefix="+" data-suffix="%">+1.9%</b><span>进房转化</span></div>
+          <div><b data-count="5.6" data-decimals="1" data-prefix="+" data-suffix="%">+5.6%</b><span>付费转化</span></div>
+          <div><b data-count="900" data-prefix="+" data-suffix="%">+900%</b><span>在线峰值</span></div>
+        </div>
+        <span class="go">看完整案例
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </a>
+  </div>
+
+  <div class="wrap soon-grid" data-stagger="90" data-draft="待补：换成你的真实案例">
+    <div class="soon"><div class="n">02</div><h4>案例整理中</h4><p>第二个案例的位置。建议放一个和主案例互补的——比如快节奏、需求不清晰、或者失败后复盘的。</p></div>
+    <div class="soon"><div class="n">03</div><h4>案例整理中</h4><p>第三个案例的位置。可以是跨端 / 设计系统 / 从 0 到 1 的项目。</p></div>
+    <div class="soon"><div class="n">04</div><h4>案例整理中</h4><p>如果暂时没有第四个，把这一栏删掉即可，三栏改两栏不影响版式。</p></div>
+  </div>
+</section>
+
+<!-- ============ 关于 ============ -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-panel" data-reveal>
+      <div class="about-grid">
+        <div>
+          <span class="kicker">关于</span>
+          <h2 data-words>把设计做成能被复用的规则。</h2>
+          <div data-draft="待改：这两段是代写草稿">
+            <p>
+              我是潘新月，产品设计师。过去两年作为多人语聊业务的唯一设计师，独立主导了语音厅这个核心模块的完整演化——
+              从统一舞台框架，到主咖放大布局，再到写进《泛多人语音厅布局规范》的三板块系统。
+            </p>
+            <p>
+              我不太满足于把单个界面画好。真正让我有成就感的，是抽象出一套规则，
+              让后面的人做新玩法时能直接站在上面，而不是重新造一遍轮子。
+              做取舍的时候，我会把"为什么是这一版"讲清楚——这比方案本身更重要。
+            </p>
+          </div>
+        </div>
+        <div class="about-photo">
+          <div class="about-square">
+            <img src="assets/img/hero-portrait.webp" alt="潘新月" width="800" height="800" loading="lazy" decoding="async">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 能力 ============ -->
+<section id="skills">
+  <div class="wrap" data-reveal>
+    <span class="kicker">能力</span>
+    <h2 style="margin-top:20px" data-words>我能带进团队的三件事。</h2>
+    <p class="lead">不是技能清单，是我在实际项目里被反复验证过的三种做事方式。</p>
+  </div>
+  <div class="wrap svc-grid" data-stagger="110">
+    <div class="svc">
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/></svg></div>
+      <h4>系统化设计</h4>
+      <p>把一次性的方案抽象成可复用的结构。语音厅的三板块 + 多尺寸 + 多结构，让 3v3、1v8、2v8 这些玩法能从同一套规则里拼出来，不用每个都自己造一遍。</p>
+    </div>
+    <div class="svc hl">
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 7v6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h4>数据驱动的取舍</h4>
+      <p>敢在冲突处做减法，并说清判断依据。主咖区从 30% 放大到 70%，牺牲的是麦位信息密度——这个取舍我能讲明白代价是什么、换回了什么，以及数据是否支持。</p>
+    </div>
+    <div class="svc">
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h4>长期主导</h4>
+      <p>不是灵光一现，是把一件事扛住两年、越扛越对。一个核心模块从容器层做到系统层，每一级认知上移都换来了更大的业务杠杆。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 方法 ============ -->
+<section id="method" class="on-dark" data-spotlight>
+  <div class="wrap">
+    <span class="kicker" data-reveal>方法</span>
+    <h2 data-words>我主导核心模块的 5 步框架。</h2>
+    <p class="lead" data-reveal>这套框架不是事后总结出来好看的，是语音厅四个阶段一步步走出来的。</p>
+    <div class="steps" data-stagger="100">
+      <div class="step"><div class="sn">01</div><div class="st">建容器</div><div class="sd">先立一个能生长的框架，而不是急着加功能。</div></div>
+      <div class="step"><div class="sn">02</div><div class="st">找爆点</div><div class="sd">在体验层找到最能撬动增量的那一处，重点放大。</div></div>
+      <div class="step"><div class="sn">03</div><div class="st">做取舍</div><div class="sd">在冲突处敢做减法，并说清判断依据。</div></div>
+      <div class="step"><div class="sn">04</div><div class="st">沉资产</div><div class="sd">把好方案固化成专利与规范，让创新可复用。</div></div>
+      <div class="step"><div class="sn">05</div><div class="st">升系统</div><div class="sd">抽象成一套规则，让未来玩法即插即用。</div></div>
+    </div>
+    <p class="method-src" data-reveal>
+      每一步在实际项目里长什么样，<a href="case-voice-layout.html">在语音厅案例里逐段展开了 →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ============ 联系 ============ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-panel" data-reveal>
+      <div class="contact-left">
+        <span class="kicker">联系</span>
+        <h2 data-words>想聊聊的话，随时。</h2>
+        <p>不管是岗位机会、项目合作，还是单纯想问问语音厅那套系统是怎么推下来的——都欢迎。</p>
+        <div class="contact-deco" aria-hidden="true"></div>
+      </div>
+      <div class="contact-rows" data-draft="待改：换成你的真实联系方式">
+        <div class="crow">
+          <span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2"/></svg></span>
+          <span class="txt"><b>邮箱</b><span id="mail">你的邮箱@example.com</span></span>
+          <button class="copy" type="button" data-copy="#mail">复制</button>
+        </div>
+        <div class="crow">
+          <span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3c-4.97 0-9 3.36-9 7.5 0 2.4 1.36 4.54 3.47 5.9L6 20l3.3-1.8c.86.2 1.76.3 2.7.3 4.97 0 9-3.36 9-7.5S16.97 3 12 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+          <span class="txt"><b>微信</b><span id="wechat">你的微信号</span></span>
+          <button class="copy" type="button" data-copy="#wechat">复制</button>
+        </div>
+        <div class="crow">
+          <span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 7H3v10h6a3 3 0 000-6 2.5 2.5 0 000-4zm-4 2h3.5a1 1 0 010 2H5V9zm0 4h4a1 1 0 010 2H5v-2zm12-6h4v1.5h-4V7zm2 2.5c-2 0-3.5 1.6-3.5 3.75S17 17 19 17s3.2-1.2 3.4-2.5h-1.9c-.2.5-.7.8-1.4.8-.9 0-1.5-.6-1.6-1.5h5c.3-2.4-1.1-4.3-3.5-4.3zm-1.4 3c.1-.9.7-1.4 1.5-1.4s1.3.5 1.4 1.4h-2.9z"/></svg></span>
+          <span class="txt"><b>作品平台</b><span id="behance">Behance / 站酷 主页链接</span></span>
+          <button class="copy" type="button" data-copy="#behance">复制</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Footer ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-logo">Xinyue Pan</div>
+    <div class="foot-tag">系统 · 空间 · 长期主导</div>
+    <div class="foot-nav">
+      <a href="#cases">案例</a>
+      <a href="#about">关于</a>
+      <a href="#skills">能力</a>
+      <a href="#method">方法</a>
+      <a href="#contact">联系</a>
+      <a href="gallery.html">照片集</a>
+    </div>
+    <div class="foot-copy">© 2026 潘新月</div>
+  </div>
+</footer>
+
+<script src="assets/js/motion.js" defer></script>
+<script>
+  // 舞台动画只在进入视口时播放，离开就停——不做无人观看的动画
+  (function () {
+    var stage = document.querySelector('[data-room]');
+    if (!stage || !('IntersectionObserver' in window)) { if (stage) stage.classList.add('live'); return; }
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) { stage.classList.toggle('live', e.isIntersecting); });
+    }, { threshold: .25 }).observe(stage);
+  })();
+</script>
+</body>
+</html>

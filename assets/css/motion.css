@@ -1,0 +1,123 @@
+/* ============================================================
+   动效层
+   总原则：
+   1) 所有动效都是"增强"，关掉 JS 或关掉动效后内容必须完整可读
+   2) 全部尊重 prefers-reduced-motion，文件末尾统一兜底
+   3) 只动 transform / opacity / filter，不动会触发重排的属性
+   依赖 tokens.css。
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. 入场：reveal
+   .js 由 motion.js 打在 <html> 上——没有 JS 就不会隐藏内容。
+   ------------------------------------------------------------ */
+.js .reveal{
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity .75s var(--ease),transform .75s var(--ease);
+}
+.js .reveal.in{opacity:1;transform:none}
+
+/* 分级延迟：给容器加 .stagger，子元素依次进场
+   --stagger-step 可在元素上覆盖，默认 70ms */
+.js .stagger > *{
+  opacity:0;transform:translateY(22px);
+  transition:opacity .65s var(--ease),transform .65s var(--ease);
+  transition-delay:calc(var(--i,0) * var(--stagger-step,70ms));
+}
+.js .stagger.in > *{opacity:1;transform:none}
+
+/* ------------------------------------------------------------
+   2. 标题逐词升起
+   motion.js 把 [data-words] 的文字拆成 <span class="w"><i>词</i></span>
+   ------------------------------------------------------------ */
+.js [data-words] .w{display:inline-block;overflow:hidden;vertical-align:top}
+.js [data-words] .w > i{
+  display:inline-block;font-style:inherit;
+  transform:translateY(105%);
+  transition:transform .8s var(--ease);
+  transition-delay:calc(var(--i,0) * 55ms);
+}
+.js [data-words].in .w > i{transform:none}
+
+/* ------------------------------------------------------------
+   3. 磁吸：元素随指针轻微位移（motion.js 写入 --mx/--my）
+   ------------------------------------------------------------ */
+.magnetic{
+  transition:transform .5s var(--ease);
+  transform:translate3d(var(--mx,0),var(--my,0),0) var(--extra-transform,);
+}
+.magnetic.dragging,.magnetic.tracking{transition:transform .12s linear}
+
+/* 3D 倾斜：给容器 perspective，元素随指针转 */
+.tilt-scene{perspective:900px}
+.tilt{
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) var(--extra-transform,);
+  transition:transform .6s var(--ease);
+  transform-style:preserve-3d;
+}
+.tilt.tracking{transition:transform .15s linear}
+
+/* ------------------------------------------------------------
+   4. 阅读进度条（案例页顶部）
+   ------------------------------------------------------------ */
+.progress{
+  position:fixed;top:0;left:0;right:0;height:3px;z-index:300;
+  background:transparent;pointer-events:none;
+}
+.progress > i{
+  display:block;height:100%;width:100%;
+  background:linear-gradient(90deg,var(--gold-deep),var(--gold));
+  transform-origin:0 50%;
+  transform:scaleX(var(--p,0));
+  transition:transform .12s linear;
+}
+
+/* ------------------------------------------------------------
+   5. 光标聚光（深色区块）
+   motion.js 写入 --sx/--sy；不支持或未激活时完全不可见
+   ------------------------------------------------------------ */
+.spotlight::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(420px circle at var(--sx,50%) var(--sy,50%),
+             rgba(230,161,0,.13),transparent 62%);
+  opacity:0;transition:opacity .5s var(--ease);
+}
+.spotlight.lit::before{opacity:1}
+
+/* ------------------------------------------------------------
+   6. 数字滚动
+   motion.js 逐帧写 textContent；这里只负责等宽避免抖动
+   ------------------------------------------------------------ */
+.tabular{font-variant-numeric:tabular-nums}
+
+/* ------------------------------------------------------------
+   7. 跨页导航过渡（View Transitions API）
+   支持的浏览器：页面之间淡入淡出 + 品牌名保持连续
+   不支持的：完全无感，就是普通跳转
+   ------------------------------------------------------------ */
+@view-transition{navigation:auto}
+
+@media(prefers-reduced-motion:no-preference){
+  ::view-transition-old(root){animation:vt-out .28s var(--ease) both}
+  ::view-transition-new(root){animation:vt-in .38s var(--ease) both}
+}
+@keyframes vt-out{to{opacity:0;transform:translateY(-10px)}}
+@keyframes vt-in{from{opacity:0;transform:translateY(14px)}}
+
+/* 品牌名在页面之间连续变形 */
+.vt-brand{view-transition-name:brand}
+
+/* ------------------------------------------------------------
+   8. 统一降级
+   系统开了"减少动态效果"时：内容直接呈现，只保留最基本的颜色过渡
+   ------------------------------------------------------------ */
+@media(prefers-reduced-motion:reduce){
+  .js .reveal,
+  .js .stagger > *{opacity:1!important;transform:none!important;transition:none!important}
+  .js [data-words] .w > i{transform:none!important;transition:none!important}
+  .magnetic,.tilt{transform:none!important;transition:none!important}
+  .spotlight::before{display:none}
+  .progress{display:none}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important}
+}

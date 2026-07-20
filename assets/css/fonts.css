@@ -1,0 +1,11 @@
+/* 自托管字体 — 源自 Google Fonts (OFL)，已子集化为基本拉丁字符。
+   中文由系统 PingFang SC / Songti SC 渲染，不走 webfont。
+   不依赖 fonts.googleapis.com，国内网络下可正常加载。 */
+@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:swap;
+  src:url(../fonts/plus-jakarta-sans-var.woff2) format('woff2')}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:700;font-display:swap;
+  src:url(../fonts/caveat-700.woff2) format('woff2')}
+@font-face{font-family:'Space Mono';font-style:normal;font-weight:400;font-display:swap;
+  src:url(../fonts/space-mono-400.woff2) format('woff2')}
+@font-face{font-family:'Space Mono';font-style:normal;font-weight:700;font-display:swap;
+  src:url(../fonts/space-mono-700.woff2) format('woff2')}

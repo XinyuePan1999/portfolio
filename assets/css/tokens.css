@@ -1,0 +1,45 @@
+/* ============================================================
+   设计变量 · 唯一真源
+   三个页面都从这里取值。改颜色 / 圆角 / 缓动只改这一个文件。
+   页面专属的变量不要写在这里，写在各自 <style> 里。
+   ============================================================ */
+:root{
+  /* ---- 颜色 ---- */
+  --bg:#f5f4f1;          /* 暖白底 */
+  --panel:#ececea;       /* 浅灰面板 */
+  --card:#ffffff;
+  --ink:#141414;
+  --muted:#6d6b67;
+  --line:#e4e2de;
+
+  --gold:#e6a100;        /* 品牌强调色 */
+  --gold-deep:#b87d00;
+  --gold-soft:#fdf1cf;
+
+  --verified:#1f9d63;    /* 案例页：已验证数据 */
+  --projected:#8a7cff;   /* 案例页：预计数据 */
+
+  /* ---- 圆角 ---- */
+  --radius-xl:34px;
+  --radius:20px;
+  --radius-s:14px;
+
+  /* ---- 排版 ---- */
+  --font-sans:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+  --font-hand:"Caveat",cursive;
+  --font-mono:"Space Mono",ui-monospace,Menlo,monospace;
+  --serif:"Georgia","Songti SC",serif;
+
+  /* ---- 布局 ---- */
+  --maxw:1180px;
+  --gutter:28px;
+
+  /* ---- 缓动 ---- */
+  --ease:cubic-bezier(.22,1,.36,1);          /* 通用：快出慢收 */
+  --ease-book:cubic-bezier(.22,.61,.36,1);   /* 翻页书专用，比通用款稍软 */
+  --ease-spring:cubic-bezier(.34,1.8,.42,1); /* 强回弹，用于灵动岛类元素 */
+
+  /* ---- 纹理 ---- */
+  --dots:radial-gradient(circle,#cfcdc8 1.3px,transparent 1.6px);
+  --dots-dark:radial-gradient(circle,rgba(255,255,255,.07) 1.3px,transparent 1.6px);
+}

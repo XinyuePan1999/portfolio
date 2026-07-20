@@ -1,38 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flipbook — Xinyue Pan</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>照片集 — 潘新月</title>
+<meta name="description" content="潘新月的照片集，3D 翻页书形式。">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<!-- 样式：字体 → 变量 → 动效 → 本页专属（不引 base.css：本页是全屏画布，不用文档流排版） -->
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/motion.css">
 <style>
   /* ============================================================
      3D 翻页书（照 Framer "Flipbook 3D" 录屏的视觉/版式重建）
      · 浅暖灰底；合起显示封面、打开为双页展开，随开合左右平移
      · 书外侧左右圆形箭头；底部居中深色页码胶囊；书页堆叠厚度
      ============================================================ */
-  :root{--ease:cubic-bezier(.22,.61,.36,1);--yellow:#e6a100}
+  /* 变量统一取自 tokens.css：翻页缓动用 --ease-book，强调色用 --gold */
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%;overflow:hidden;background:#d6d3ce;
-    font-family:"Space Mono",ui-monospace,Menlo,monospace;-webkit-font-smoothing:antialiased;color:#222}
+    font-family:var(--font-mono);-webkit-font-smoothing:antialiased;color:#222}
 
   .scene{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
     perspective:2600px;perspective-origin:50% 46%;touch-action:none;user-select:none}
   .book{position:relative;width:calc(var(--pw)*2);height:var(--ph);transform-style:preserve-3d;
-    transition:transform .85s var(--ease);
+    transition:transform .85s var(--ease-book);
     filter:drop-shadow(0 34px 42px rgba(0,0,0,.28))}
 
   /* 纸张堆叠厚度（外侧边缘） */
   .pad{position:absolute;top:5px;bottom:5px;width:var(--pw);z-index:0;background:#fff;border-radius:8px;
-    transition:opacity .4s var(--ease)}
+    transition:opacity .4s var(--ease-book)}
   .pad.r{left:50%;box-shadow:3px 3px 0 -1px #ede8e0,6px 6px 0 -2px #e3ddd2,9px 9px 0 -3px #d9d2c6}
   .pad.l{right:50%;box-shadow:-3px 3px 0 -1px #ede8e0,-6px 6px 0 -2px #e3ddd2,-9px 9px 0 -3px #d9d2c6}
 
   .leaf{position:absolute;top:0;left:50%;width:var(--pw);height:var(--ph);
     transform-origin:left center;transform-style:preserve-3d;
-    transition:transform .85s var(--ease);will-change:transform}
+    transition:transform .85s var(--ease-book);will-change:transform}
   .leaf.flipped{transform:rotateY(-180deg)}
   .face{position:absolute;inset:0;backface-visibility:hidden;overflow:hidden;background:#fff;
     border:1px solid rgba(0,0,0,.06);border-radius:8px}
@@ -45,20 +48,23 @@
   .face .cap{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:14px 16px;
     background:linear-gradient(0deg,rgba(0,0,0,.68),transparent);color:#fff;
     display:flex;justify-content:space-between;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
-  .face .cap .yr{color:var(--yellow)}
+  .face .cap .yr{color:var(--gold)}
 
   /* 封面 */
   .cover{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
     text-align:center;background:linear-gradient(160deg,#26262d,#141418)}
   .cover .sub{font-size:11px;letter-spacing:.32em;color:rgba(255,255,255,.5);text-transform:uppercase}
-  .cover .sig{font-family:"Caveat",cursive;font-size:clamp(42px,6vw,66px);line-height:1;color:#fff}
-  .cover .rule{width:44px;height:2px;background:var(--yellow)}
+  .cover .sig{font-family:var(--font-hand);font-weight:700;font-size:clamp(42px,6vw,66px);line-height:1;color:#fff}
+  .cover .rule{width:44px;height:2px;background:var(--gold)}
+  /* 照片尚未放入时的占位页 */
+  .cover .hint{font-size:11px;line-height:1.9;color:rgba(255,255,255,.42);max-width:74%;letter-spacing:.02em}
+  .cover .hint code{color:var(--gold);font-size:11px}
 
   /* 左右箭头 */
   .arrow{position:fixed;top:50%;transform:translateY(-50%);z-index:40;
     width:44px;height:44px;border-radius:50%;border:none;background:#fff;color:#333;cursor:pointer;
     display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.18);
-    transition:left .85s var(--ease),background .2s,transform .2s}
+    transition:left .85s var(--ease-book),background .2s,transform .2s}
   .arrow:hover{background:#f3f0ea;transform:translateY(-50%) scale(1.06)}
 
   /* 页码胶囊 */
@@ -67,18 +73,18 @@
     background:rgba(38,38,40,.9);color:#fff;font-size:12px;letter-spacing:.1em;
     padding:6px 16px;border-radius:20px;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.25)}
 
-  .back{position:fixed;top:22px;left:22px;z-index:40;display:inline-flex;align-items:center;gap:8px;
-    color:#333;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  /* 注意：类名不能叫 .back —— 会和翻页书页面的 .face.back 撞样式 */
+  .backlink{position:fixed;top:22px;left:22px;z-index:40;display:inline-flex;align-items:center;gap:8px;
+    color:#333;font-size:12px;font-weight:700;letter-spacing:.05em;
     padding:9px 15px 9px 11px;text-decoration:none;background:#fff;border-radius:100px;
-    box-shadow:0 6px 16px rgba(0,0,0,.14);transition:.2s var(--ease)}
-  .back:hover{transform:translateX(-2px)}
+    box-shadow:0 6px 16px rgba(0,0,0,.14);transition:.2s var(--ease-book)}
+  .backlink:hover{transform:translateX(-2px)}
 
   /* ---------- Dynamic Info（灵动岛信息条，参考 Framer "Dynamic Info"）---------- */
   .dynabar{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:60;
     background:#0a0a0a;color:#fff;border-radius:0 0 24px 24px;padding:9px 14px 10px 9px;
     width:min(320px,86vw);box-shadow:0 22px 44px -18px rgba(0,0,0,.55);cursor:default;
-    transition:box-shadow .4s var(--islandE)}
-  :root{--islandE:cubic-bezier(.34,1.8,.42,1)}
+    transition:box-shadow .4s var(--ease-spring)}
   /* 顶部两侧凹角，融入顶边 */
   .dynabar::before,.dynabar::after{content:"";position:absolute;top:0;width:24px;height:24px}
   .dynabar::before{left:-24px;background:radial-gradient(circle at bottom left,transparent 24px,#0a0a0a 24.5px)}
@@ -91,7 +97,7 @@
   .dynabar .time{margin-left:auto;font-size:13px;color:#f2f2f2;font-family:-apple-system,sans-serif;font-variant-numeric:tabular-nums}
   /* 第二行：grid 0fr→1fr 平滑展开（强回弹） */
   .dynabar .more{display:grid;grid-template-rows:0fr;opacity:0;margin-top:0;
-    transition:grid-template-rows .62s var(--islandE),opacity .4s ease,margin-top .62s var(--islandE)}
+    transition:grid-template-rows .62s var(--ease-spring),opacity .4s ease,margin-top .62s var(--ease-spring)}
   .dynabar:hover .more{grid-template-rows:1fr;opacity:1;margin-top:11px}
   .dynabar .more-in{overflow:hidden;display:flex;align-items:center;justify-content:space-between}
   .dynabar .socials{display:flex;gap:8px}
@@ -104,15 +110,15 @@
 </style>
 </head>
 <body>
-  <a class="back" href="paul-style-replica.html">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Back
+  <a class="backlink" href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    返回
   </a>
 
   <!-- Dynamic Info 信息条 -->
   <div class="dynabar">
     <div class="row1">
-      <img class="av" src="avatar.jpg" alt="Xinyue Pan">
+      <img class="av" src="assets/img/avatar.webp" alt="潘新月" width="108" height="108">
       <div class="who"><b>Xinyue Pan</b><span>Designer</span></div>
       <div class="time" id="diTime">2:38 PM</div>
     </div>
@@ -143,50 +149,76 @@
   <div class="counter" id="counter">Cover 1 / —</div>
 
 <script>
+  // ── 照片清单 ───────────────────────────────────────────────
+  // 把照片文件放进 photos/ 目录，按下面的名字命名即可自动出现在书里。
+  // 文件不存在的条目会被自动跳过——不会出现碎图。
+  // 想加更多照片：往数组里继续追加 {src, t, yr} 即可。
   const PHOTOS = [
-    {src:'g1.jpg', t:'Maldives'},
-    {src:'g2.jpg', t:'Chongqing'},
-    {src:'g3.jpg', t:'Street Kitchen'},
-    {src:'g4.jpg', t:'Close Up'},
-    {src:'g5.jpg', t:'Golden Cat'},
-    {src:'g6.jpg', t:'Studio'},
-    {src:'g7.jpg', t:'Studio'},
-    {src:'g8.jpg', t:'Seoul'},
-    {src:'g9.jpg', t:'Viewsic'},
+    {src:'photos/g1.jpg', t:'占位图 · 可替换',  yr:'2026'},
+    {src:'photos/g2.jpg', t:'占位图 · 可替换',  yr:'2026'},
+    {src:'photos/g3.jpg', t:'Street Kitchen', yr:'2025'},
+    {src:'photos/g4.jpg', t:'Close Up',       yr:'2023'},
+    {src:'photos/g5.jpg', t:'Golden Cat',     yr:'2024'},
+    {src:'photos/g6.jpg', t:'Studio',         yr:'2025'},
+    {src:'photos/g7.jpg', t:'Studio',         yr:'2023'},
+    {src:'photos/g8.jpg', t:'Seoul',          yr:'2024'},
+    {src:'photos/g9.jpg', t:'Viewsic',        yr:'2025'},
   ];
-
-  // 面序列：封面 + 9 张照片 → 5 个 leaf（10 页）
-  const faces=[{cover:true}];
-  PHOTOS.forEach((p,i)=>faces.push({src:p.src,t:p.t,yr:String(2023+(i%3))}));
-  if(faces.length%2) faces.push({blank:true});
 
   const book=document.getElementById('book');
   const padL=document.getElementById('padL'), padR=document.getElementById('padR');
-  const leaves=[];
-  for(let i=0;i<faces.length;i+=2){
-    const leaf=document.createElement('div'); leaf.className='leaf';
-    leaf.appendChild(makeFace('front',faces[i]));
-    leaf.appendChild(makeFace('back',faces[i+1]));
-    book.appendChild(leaf); leaves.push(leaf);
-  }
+  const prevBtn=document.getElementById('prev'), nextBtn=document.getElementById('next'), counter=document.getElementById('counter');
+  const scene=document.getElementById('scene');
+
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
   function makeFace(side,f){
     const el=document.createElement('div'); el.className='face '+side;
     if(f.cover){
       el.innerHTML=`<div class="cover"><div class="sub">Portfolio</div>
-        <div class="sig">Xinyue Pan</div><div class="rule"></div>
+        <div class="sig vt-brand">Xinyue Pan</div><div class="rule"></div>
         <div class="sub" style="margin-top:4px">Photo Book · 2026</div></div>`;
+    }else if(f.empty){
+      el.innerHTML=`<div class="cover"><div class="sub">照片集</div>
+        <div class="sig" style="font-size:38px">整理中</div><div class="rule"></div>
+        <p class="hint">把照片放进 photos/ 目录，命名为<br><code>photos/g1.jpg … g9.jpg</code><br>即可自动出现在这本书里。</p></div>`;
     }else if(f.blank){
       el.innerHTML=`<div class="cover" style="background:#f3f0ea"><div class="sub" style="color:#999">The End</div></div>`;
     }else{
-      el.innerHTML=`<img src="${f.src}" alt="${f.t}"><div class="spineShade"></div>
-        <div class="cap"><span>${f.t}</span><span class="yr">${f.yr}</span></div>`;
+      el.innerHTML=`<img src="${esc(f.src)}" alt="${esc(f.t)}"><div class="spineShade"></div>
+        <div class="cap"><span>${esc(f.t)}</span><span class="yr">${esc(f.yr)}</span></div>`;
     }
     return el;
   }
-  const total=leaves.length, P=total*2;
+
+  // 预检哪些照片真的存在——缺失的直接不进书，避免整本翻页书全是碎图
+  const exists=src=>new Promise(res=>{
+    const im=new Image();
+    im.onload=()=>res(true); im.onerror=()=>res(false);
+    im.src=src;
+  });
+
+  let leaves=[], total=0, P=0, PW, flipped=0;
+
+  function buildBook(photos){
+    const faces=[{cover:true}];
+    if(photos.length){
+      photos.forEach(p=>faces.push(p));
+      if(faces.length%2) faces.push({blank:true});
+    }else{
+      faces.push({empty:true});
+    }
+    for(let i=0;i<faces.length;i+=2){
+      const leaf=document.createElement('div'); leaf.className='leaf';
+      leaf.appendChild(makeFace('front',faces[i]));
+      leaf.appendChild(makeFace('back',faces[i+1]));
+      book.appendChild(leaf); leaves.push(leaf);
+    }
+    total=leaves.length; P=total*2;
+    sizeBook();
+  }
 
   // 尺寸
-  let PW;
   function sizeBook(){
     const RATIO=380/537;                                // Figma 书页比例 0.708
     const ph=Math.min(innerHeight*0.78, 620);
@@ -197,10 +229,8 @@
     PW=pw; updateState();
   }
 
-  // 状态
-  let flipped=0;
-  const prevBtn=document.getElementById('prev'), nextBtn=document.getElementById('next'), counter=document.getElementById('counter');
   function updateState(){
+    if(!total) return;
     const cx=innerWidth/2;
     const shift = flipped===0? -PW/2 : (flipped===total? PW/2 : 0);
     book.style.transform=`translateX(${shift}px)`;
@@ -215,7 +245,6 @@
       : flipped===total? `${P}-${P} / ${P}`
       : `${flipped*2}-${flipped*2+1} / ${P}`;
   }
-  sizeBook();
   addEventListener('resize',sizeBook);
 
   function goNext(){ if(flipped<total){ leaves[flipped].classList.add('flipped'); flipped++; updateState(); } }
@@ -225,7 +254,6 @@
   addEventListener('keydown',e=>{ if(e.key==='ArrowRight')goNext(); if(e.key==='ArrowLeft')goPrev(); });
 
   // 点击书面翻页
-  const scene=document.getElementById('scene');
   scene.addEventListener('click',e=>{ if(dragMoved)return; (e.clientX>=innerWidth/2)?goNext():goPrev(); });
 
   // 拖拽翻页
@@ -265,6 +293,14 @@
     diTime.textContent=`${h}:${String(m).padStart(2,'0')} ${ap}`;
   }
   tick(); setInterval(tick,15000);
+
+  // 启动：先探测哪些照片真的存在，再按结果建书
+  (async ()=>{
+    const ok = await Promise.all(PHOTOS.map(p=>exists(p.src)));
+    const found = PHOTOS.filter((_,i)=>ok[i]);
+    if(!found.length) counter.style.display='none';
+    buildBook(found);
+  })();
 </script>
 </body>
 </html>

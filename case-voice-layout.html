@@ -1,54 +1,31 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>语音厅布局系统 — 潘新月 · 案例</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<meta name="description" content="2024.3–2026.4，多人语聊唯一设计师独立主导四个阶段：从统一舞台框架，到主咖放大布局、外观设计专利，再到覆盖全场景的泛多人布局系统。">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="语音厅布局系统 — 潘新月 · 案例">
+<meta property="og:description" content="两年主导一个核心模块：从能用的容器，到可复用的空间系统标准与专利规范。">
+<meta property="og:locale" content="zh_CN">
+
+<!-- 样式：字体 → 变量 → 基础 → 动效 → 本页专属 -->
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/motion.css">
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/plus-jakarta-sans-var.woff2" crossorigin>
 <style>
   /* ============================================================
-     案例三 · 语音厅布局系统（耐力/稳 · 系统思维）
-     视觉基调复用作品集主色（暖白 + 强调黄 + Plus Jakarta Sans）
+     案例 · 语音厅布局系统（耐力/稳 · 系统思维）
      骨架偏系统化：时间轴 / 精确网格 / 克制
      ⚠ 全站无绝对营收数值（脱敏红线）；已验证 vs 预计分区标注
+     通用变量与基础排版见 assets/css/tokens.css + base.css
      ============================================================ */
-  :root{
-    --bg:#f5f4f1;
-    --panel:#ececea;
-    --card:#ffffff;
-    --ink:#141414;
-    --muted:#6d6b67;
-    --line:#e4e2de;
-    --gold:#e6a100;
-    --gold-deep:#b87d00;
-    --gold-soft:#fdf1cf;
-    --verified:#1f9d63;      /* 已验证=绿 */
-    --projected:#8a7cff;     /* 预计=紫，视觉上明显区分 */
-    --radius-xl:34px;
-    --radius:20px;
-    --radius-s:14px;
-    --maxw:1180px;
-    --ease:cubic-bezier(.22,1,.36,1);
-    --dots:radial-gradient(circle,#cfcdc8 1.3px,transparent 1.6px);
-    --serif:"Georgia","Songti SC",serif;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;
-    background:var(--bg);color:var(--ink);line-height:1.6;
-    -webkit-font-smoothing:antialiased;overflow-x:hidden;
-  }
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
-  section{padding:104px 0}
-  .kicker{color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
-  .kicker::before{content:"// "}
-  h2{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.025em;font-weight:800}
-  h3{font-size:clamp(20px,2.4vw,26px);font-weight:800;letter-spacing:-.02em}
-  .lead{color:var(--muted);font-size:17px;line-height:1.75;max-width:64ch}
+  h2{font-size:clamp(28px,4.2vw,46px);line-height:1.1}
+  .lead{max-width:64ch}
   .stage-num{font-family:var(--serif);font-style:italic;color:var(--gold);font-weight:700}
 
   /* ---------- 进度导航 ---------- */
@@ -155,12 +132,9 @@
   .rm.slot{bottom:10%;right:8%;width:26%;height:12%;background:rgba(230,161,0,.16);border:1px dashed rgba(230,161,0,.5)}
   .rm.lbl{color:rgba(255,255,255,.65);font-size:9px;display:flex;align-items:center;justify-content:center;text-align:center;padding:2px}
 
-  /* ---------- ⑥ 核心决策 30→70 ---------- */
-  .decision{background:var(--ink);color:#fff;position:relative;overflow:hidden}
-  .decision::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1.3px,transparent 1.6px);background-size:20px 20px;opacity:.5;pointer-events:none}
-  .decision .wrap{position:relative;z-index:1}
-  .decision .kicker{color:var(--gold)}
-  .decision h2{color:#fff;margin-top:18px;max-width:18ch}
+  /* ---------- ⑥ 核心决策 30→70 ----------
+     深色底 + 点阵纹理由 base.css 的 .on-dark 提供 */
+  .decision h2{margin-top:18px;max-width:18ch}
   .decision .quote{font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.6vw,28px);line-height:1.5;color:#fff;max-width:22ch;margin:34px 0}
   .balance{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;margin-top:44px}
   .bal-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:var(--radius);padding:26px}
@@ -208,7 +182,7 @@
   @media(max-width:860px){.system-cols{grid-template-columns:1fr}}
 
   /* ---------- ⑨ 价值 + 方法论 + 反思 ---------- */
-  .value{background:var(--ink);color:#fff}
+  /* 深色底由 base.css 的 .on-dark 提供 */
   .value .kicker{color:var(--gold)}
   .value h2{color:#fff;margin-top:16px}
   .data-board{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:52px}
@@ -247,14 +221,24 @@
 
   /* ---------- Footer ---------- */
   footer{text-align:center;padding:64px 0}
-  .foot-name{font-family:"Caveat",cursive;font-size:32px;font-weight:700}
+  .foot-name{font-family:var(--font-hand);font-size:32px;font-weight:700}
   .foot-tag{color:var(--muted);font-size:14.5px;margin-top:6px}
   .foot-back{margin-top:26px}
   .foot-back a{color:var(--gold);font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:8px}
 
-  /* ---------- Reveal ---------- */
-  .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-  .reveal.in{opacity:1;transform:none}
+  /* ---------- 时间轴：滚动依次点亮 ---------- */
+  .tl-step .node{transition:background .5s var(--ease),box-shadow .5s var(--ease),transform .5s var(--ease)}
+  .js .stagger.in .tl-step .node{background:var(--gold);box-shadow:0 0 0 5px rgba(230,161,0,.18)}
+  /* 时间轴那条虚线随进场从左往右画出来 */
+  .timeline::before{transform:scaleX(0);transform-origin:0 50%;transition:transform 1.1s var(--ease) .2s}
+  .js .timeline.in::before{transform:scaleX(1)}
+  @media(max-width:860px){
+    .timeline::before{transform:scaleY(0);transform-origin:50% 0}
+    .js .timeline.in::before{transform:scaleY(1)}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .timeline::before{transform:none!important;transition:none!important}
+  }
 </style>
 </head>
 <body>
@@ -280,17 +264,17 @@
 <!-- ============ ① Hero ============ -->
 <section class="hero">
   <div class="wrap">
-    <div class="span-tag reveal">
+    <div class="span-tag" data-reveal>
       <b>2024.3 → 2026.4</b> · 四个阶段 · 多人语聊唯一设计师，独立主导 2 年
     </div>
-    <h1 class="reveal">
+    <h1 data-reveal>
       把一个语音厅布局，<br>从<span class="g">能用的容器</span>，<br>做成一套<span class="g">可复用的空间系统</span>。
     </h1>
-    <p class="sub reveal">
+    <p class="sub" data-reveal>
       两年、四个阶段——从画界面，到定专利、立规范。这不是一次改版，
       而是一个核心模块由我一路主导、越做越对的演化。
     </p>
-    <div class="metrics reveal">
+    <div class="metrics" data-stagger="140">
       <div class="m">
         <b>+1.9<small style="font-size:.5em">%</small></b>
         <span>进房转化 20.35%→20.73%</span>
@@ -313,26 +297,26 @@
 <!-- ============ ② 为什么放这个项目 ============ -->
 <section>
   <div class="wrap">
-    <span class="kicker reveal">为什么放这个项目</span>
-    <h2 class="reveal" style="margin-top:18px;max-width:20ch">一个模块，我主导它一路进化。</h2>
-    <div class="why-grid">
-      <div class="why-card reveal">
+    <span class="kicker" data-reveal>为什么放这个项目</span>
+    <h2 data-words style="margin-top:18px;max-width:20ch">一个模块，我主导它一路进化。</h2>
+    <div class="why-grid" data-stagger="110">
+      <div class="why-card">
         <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg></div>
         <h4>长期主导</h4>
         <p>作为多人语聊业务唯一设计师，从 2024 到 2026 独立主导两年，见证并推动一个核心模块的完整生命周期。</p>
       </div>
-      <div class="why-card reveal">
+      <div class="why-card">
         <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/></svg></div>
         <h4>系统思维</h4>
         <p>不满足于把单个界面画好，而是抽象出可复用的空间规则——让后续玩法在同一套系统里生长，不重复造轮子。</p>
       </div>
-      <div class="why-card reveal">
+      <div class="why-card">
         <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V8l8-5 8 5v12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
         <h4>空间设计</h4>
         <p>语音厅的核心命题是"人与内容如何在有限空间里共处"——把消费、沉浸、麦位信息在同一舞台上排布得恰到好处。</p>
       </div>
     </div>
-    <p class="why-note reveal">
+    <p class="why-note" data-reveal>
       这个案例代表我的"耐力"——不是灵光一现，而是把一件事扛住两年、越扛越对的能力。
     </p>
   </div>
@@ -341,10 +325,10 @@
 <!-- ============ ③ 演化总览 ============ -->
 <section class="overview">
   <div class="wrap">
-    <span class="kicker reveal">演化总览</span>
-    <h2 class="reveal" style="margin-top:18px;max-width:24ch">四个阶段，一条持续升维的曲线。</h2>
-    <p class="lead reveal" style="margin-top:16px">容器 → 沉浸舞台 → 专利 → 系统规范。认知层级每上一级，业务杠杆就更大一层。先看全景，再逐段深入。</p>
-    <div class="timeline reveal">
+    <span class="kicker" data-reveal>演化总览</span>
+    <h2 data-words style="margin-top:18px;max-width:24ch">四个阶段，一条持续升维的曲线。</h2>
+    <p class="lead" data-reveal style="margin-top:16px">容器 → 沉浸舞台 → 专利 → 系统规范。认知层级每上一级，业务杠杆就更大一层。先看全景，再逐段深入。</p>
+    <div class="timeline" data-reveal data-stagger="120">
       <div class="tl-row">
         <div class="tl-step">
           <div class="node"></div>
@@ -381,7 +365,7 @@
 
 <!-- ============ ④ 阶段一 ============ -->
 <section>
-  <div class="wrap stage reveal">
+  <div class="wrap stage" data-reveal>
     <div class="s-text">
       <div class="stage-label"><span class="n stage-num">01</span><span class="t">容器层 · 2024.3</span></div>
       <h3>起点：从一堆组件，到一个舞台。</h3>
@@ -414,7 +398,7 @@
 
 <!-- ============ ⑤ 阶段二 放大舞台（视觉高潮）============ -->
 <section style="background:var(--panel)">
-  <div class="wrap stage rev reveal">
+  <div class="wrap stage rev" data-reveal>
     <div class="s-text">
       <div class="stage-label"><span class="n stage-num">02</span><span class="t">体验层 · 2024.11–2025.2 · 价值爆发点</span></div>
       <h3>放大舞台：让主咖真正"站上台"。</h3>
@@ -444,12 +428,12 @@
 </section>
 
 <!-- ============ ⑥ 核心决策 ============ -->
-<section class="decision">
+<section class="decision on-dark" data-spotlight data-progress>
   <div class="wrap">
-    <span class="kicker reveal">核心决策</span>
-    <h2 class="reveal">主咖区从 30% 放大到 70%——<br>放大的不是尺寸，是取舍。</h2>
-    <p class="quote reveal">"每多给主咖一寸沉浸，就少给麦位一寸信息。这一版的判断，是想清楚了这一寸该给谁。"</p>
-    <div class="balance reveal">
+    <span class="kicker" data-reveal>核心决策</span>
+    <h2 data-reveal>主咖区从 30% 放大到 70%——<br>放大的不是尺寸，是取舍。</h2>
+    <p class="quote" data-reveal>"每多给主咖一寸沉浸，就少给麦位一寸信息。这一版的判断，是想清楚了这一寸该给谁。"</p>
+    <div class="balance" data-reveal>
       <div class="bal-card">
         <h4>如果不放大</h4>
         <ul>
@@ -468,7 +452,7 @@
         </ul>
       </div>
     </div>
-    <p class="reveal" style="margin-top:36px;color:rgba(255,255,255,.6);font-size:15px;max-width:60ch">
+    <p data-reveal style="margin-top:36px;color:rgba(255,255,255,.6);font-size:15px;max-width:60ch">
       资深与执行的分水岭，往往不在"做得多好看"，而在"敢不敢在冲突处做减法，并说清楚为什么"。
     </p>
   </div>
@@ -477,11 +461,11 @@
 <!-- ============ ⑦ 专利 / 标准化 ============ -->
 <section class="patent">
   <div class="wrap">
-    <span class="kicker reveal">从"做方案"到"定标准"</span>
-    <h2 class="reveal" style="margin-top:18px;max-width:22ch">当一个方案好到值得被固化。</h2>
-    <p class="lead reveal" style="margin-top:16px">放大舞台的设计创新，不止停在一次上线——它被固化成了公司资产：一份外观设计专利，和一份写进规范的布局标准。重点不是"发明了什么"，而是"这套东西好到值得成为别人做新玩法的地基"。</p>
+    <span class="kicker" data-reveal>从"做方案"到"定标准"</span>
+    <h2 data-reveal style="margin-top:18px;max-width:22ch">当一个方案好到值得被固化。</h2>
+    <p class="lead" data-reveal style="margin-top:16px">放大舞台的设计创新，不止停在一次上线——它被固化成了公司资产：一份外观设计专利，和一份写进规范的布局标准。重点不是"发明了什么"，而是"这套东西好到值得成为别人做新玩法的地基"。</p>
     <div class="patent-grid">
-      <div class="patent-cert reveal">
+      <div class="patent-cert" data-reveal>
         <div class="seal">外观设计<br>专利</div>
         <div class="doc-t">专利申请交底书</div>
         <div class="doc-n">语音聊天室舞台区布局放大</div>
@@ -490,7 +474,7 @@
         <div class="row"><span>提交时间</span><b>2025.2</b></div>
         <div class="row"><span>关联文档</span><b>《放大舞台布局设计文档》</b></div>
       </div>
-      <div class="reveal">
+      <div data-reveal>
         <h3 style="margin-bottom:8px">四个要点，写进了《泛多人语音厅布局规范》</h3>
         <p style="color:var(--muted);font-size:15px;margin-bottom:8px">专利的价值，是把一次性的设计判断，变成团队可反复调用的规则。</p>
         <ul class="patent-points">
@@ -507,11 +491,11 @@
 <!-- ============ ⑧ 系统重构（系统思维最强证据）============ -->
 <section>
   <div class="wrap">
-    <span class="kicker reveal">系统重构</span>
-    <h2 class="reveal" style="margin-top:18px;max-width:26ch">从"一个布局"，到"一套能长出所有布局的系统"。</h2>
-    <p class="lead reveal" style="margin-top:16px">2026 年，玩法越来越多——3v3、1v8、2v8……组合混乱、模块难复用、麦位规格庞杂。这一版不再画某一个界面，而是抽象出一套三板块结构，让任意场景都能从同一套规则里拼出来。</p>
-    <div class="system-cols">
-      <div class="sys-card reveal">
+    <span class="kicker" data-reveal>系统重构</span>
+    <h2 data-reveal style="margin-top:18px;max-width:26ch">从"一个布局"，到"一套能长出所有布局的系统"。</h2>
+    <p class="lead" data-reveal style="margin-top:16px">2026 年，玩法越来越多——3v3、1v8、2v8……组合混乱、模块难复用、麦位规格庞杂。这一版不再画某一个界面，而是抽象出一套三板块结构，让任意场景都能从同一套规则里拼出来。</p>
+    <div class="system-cols" data-stagger="110">
+      <div class="sys-card">
         <div class="hd"><span class="idx">A</span><h4>三大板块</h4></div>
         <div class="variants">
           <div class="variant"><span class="box"><i style="top:4px;left:4px;right:4px;height:5px"></i></span><span class="v-txt"><b>玩法信息条</b><span>顶部 · 状态与玩法入口</span></span></div>
@@ -519,7 +503,7 @@
           <div class="variant"><span class="box"><i style="bottom:4px;left:4px;width:8px;height:8px;border-radius:50%"></i><i style="bottom:4px;left:15px;width:8px;height:8px;border-radius:50%"></i><i style="bottom:4px;left:26px;width:8px;height:8px;border-radius:50%"></i></span><span class="v-txt"><b>麦位区</b><span>下部 · 多结构自适应</span></span></div>
         </div>
       </div>
-      <div class="sys-card reveal">
+      <div class="sys-card">
         <div class="hd"><span class="idx">B</span><h4>主舞台 · 三尺寸</h4></div>
         <div class="variants">
           <div class="variant"><span class="box"><i style="top:9px;left:15px;width:8px;height:8px;border-radius:50%"></i></span><span class="v-txt"><b>标准</b><span>常规多人语聊</span></span></div>
@@ -527,7 +511,7 @@
           <div class="variant"><span class="box"><i style="top:4px;left:6px;right:6px;bottom:4px;border-radius:5px"></i></span><span class="v-txt"><b>全屏</b><span>虚拟演唱会等重内容</span></span></div>
         </div>
       </div>
-      <div class="sys-card reveal">
+      <div class="sys-card">
         <div class="hd"><span class="idx">C</span><h4>麦位 · 四结构</h4></div>
         <div class="variants">
           <div class="variant"><span class="box"><i style="top:12px;left:4px;width:6px;height:6px;border-radius:50%"></i><i style="top:12px;left:12px;width:6px;height:6px;border-radius:50%"></i><i style="top:12px;left:20px;width:6px;height:6px;border-radius:50%"></i></span><span class="v-txt"><b>三层平铺 / 紧凑</b><span>多人高密度</span></span></div>
@@ -536,7 +520,7 @@
         </div>
       </div>
     </div>
-    <div class="scenarios reveal">
+    <div class="scenarios" data-reveal>
       <span class="sc" style="align-self:center;color:var(--muted);border:none;background:transparent">同一套系统，拼出全场景：</span>
       <span class="sc"><b>3v3</b> 对阵</span>
       <span class="sc"><b>1v8</b> 主咖</span>
@@ -547,14 +531,14 @@
 </section>
 
 <!-- ============ ⑨ 价值 + 方法论 + 反思 ============ -->
-<section class="value">
+<section class="value on-dark" data-spotlight>
   <div class="wrap">
-    <span class="kicker reveal">价值与沉淀</span>
-    <h2 class="reveal">两年主导，换来的东西。</h2>
+    <span class="kicker" data-reveal>价值与沉淀</span>
+    <h2 data-reveal>两年主导，换来的东西。</h2>
 
     <!-- 数据看板：已验证 / 预计 分区 -->
     <div class="data-board">
-      <div class="board verified reveal">
+      <div class="board verified" data-reveal>
         <div class="b-hd"><span class="d"></span>已验证 · 作为结论</div>
         <div class="data-list">
           <div class="di"><span class="k">进房转化 20.35%→20.73%</span><span class="v">+1.9%</span></div>
@@ -565,7 +549,7 @@
           <div class="di"><span class="k">付费 UV</span><span class="v">+9.9%</span></div>
         </div>
       </div>
-      <div class="board projected reveal">
+      <div class="board projected" data-reveal>
         <div class="b-hd"><span class="d"></span>预计 · 作为预期收益</div>
         <div class="data-list">
           <div class="di"><span class="k">看播渗透</span><span class="v">+0.2% <small>预计</small></span></div>
@@ -581,8 +565,8 @@
 
     <!-- 方法论 5 步 -->
     <div class="method">
-      <h3 class="reveal">我主导核心模块的 5 步框架</h3>
-      <div class="steps reveal">
+      <h3 data-reveal>我主导核心模块的 5 步框架</h3>
+      <div class="steps" data-stagger="100">
         <div class="step"><div class="sn">01</div><div class="st">建容器</div><div class="sd">先立一个能生长的框架，而不是急着加功能。</div></div>
         <div class="step"><div class="sn">02</div><div class="st">找爆点</div><div class="sd">在体验层找到最能撬动增量的那一处，重点放大。</div></div>
         <div class="step"><div class="sn">03</div><div class="st">做取舍</div><div class="sd">在冲突处敢做减法，并说清判断依据。</div></div>
@@ -593,8 +577,8 @@
 
     <!-- 反思 + 生态收尾 -->
     <div class="reflect">
-      <p class="q reveal">"如果重来，我会更早开始沉淀标准——很多重复开发，是因为规则来得太晚。"</p>
-      <p class="ecosystem reveal">
+      <p class="q" data-reveal>"如果重来，我会更早开始沉淀标准——很多重复开发，是因为规则来得太晚。"</p>
+      <p class="ecosystem" data-reveal>
         这套布局系统现在成了后续玩法（<b>AI 互动、虚拟演唱会、品牌合作</b>）的底层框架——
         我做的一版布局，变成了别人做新玩法的地基。<br>从画界面，到定标准。
       </p>
@@ -605,17 +589,12 @@
 <!-- ============ Footer ============ -->
 <footer>
   <div class="wrap">
-    <div class="foot-name">Xinyue Pan</div>
+    <div class="foot-name vt-brand">Xinyue Pan</div>
     <div class="foot-tag">系统 · 空间 · 长期主导</div>
     <div class="foot-back"><a href="index.html">← 返回作品集</a></div>
   </div>
 </footer>
 
-<script>
-  const io=new IntersectionObserver((es)=>{
-    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
-  },{threshold:.12});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-</script>
+<script src="assets/js/motion.js" defer></script>
 </body>
 </html>
