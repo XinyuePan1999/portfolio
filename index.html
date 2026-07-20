@@ -1,62 +1,50 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>潘新月 · 作品集</title>
-<!-- 待填：一句话描述，会出现在搜索结果和分享卡片上 -->
-<meta name="description" content="潘新月的作品集。">
+<title>Web Design — Portfolio</title>
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-
-<!-- 社交分享卡片（微信 / LinkedIn / 脉脉）— 文案待填 -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="潘新月 · 作品集">
-<meta property="og:description" content="潘新月的作品集。">
+<meta property="og:title" content="Web Design — Portfolio">
 <meta property="og:image" content="assets/img/hero-portrait.webp">
-<meta property="og:locale" content="zh_CN">
-<meta name="twitter:card" content="summary_large_image">
 
-<!-- 样式：字体 → 变量 → 基础 → 动效 → 本页专属 -->
+<!-- 自托管字体：fonts.googleapis.com 国内不可达 -->
 <link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="stylesheet" href="assets/css/tokens.css">
-<link rel="stylesheet" href="assets/css/base.css">
 <link rel="stylesheet" href="assets/css/motion.css">
-<link rel="preload" as="font" type="font/woff2" href="assets/fonts/plus-jakarta-sans-var.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="assets/fonts/caveat-700.woff2" crossorigin>
 <style>
   /* ============================================================
-     首页专属样式。通用变量见 assets/css/tokens.css
-     ⚠ 这个文件是"骨架"：版式、动效、交互都做好了，
-       文字和作品内容留成空位，由本人填。
+     版式/交互复刻参考：paul-hahn.com（个人信息与图片已换占位符）
      ============================================================ */
-
-  /* ---------- 待填位标记 ----------
-     <body class="draft"> 时显示。填完删掉 class="draft"，
-     顶部提示条和所有黄色虚线框一并消失。 */
-  .draft-bar{display:none}
-  body.draft .draft-bar{
-    display:block;background:var(--ink);color:#fff;font-size:13.5px;line-height:1.7;padding:12px 0;
+  :root{
+    --bg:#f5f4f1;          /* 暖白底 */
+    --panel:#ececea;       /* 浅灰大面板 */
+    --card:#ffffff;
+    --ink:#141414;
+    --muted:#6d6b67;
+    --line:#e4e2de;
+    --blue:#e6a100;        /* 强调黄 */
+    --blue-deep:#b87d00;
+    --radius-xl:34px;
+    --radius:20px;
+    --maxw:1180px;
+    --ease:cubic-bezier(.22,1,.36,1);
+    --dots:radial-gradient(circle, #cfcdc8 1.3px, transparent 1.6px);
   }
-  body.draft .draft-bar b{color:var(--gold)}
-  body.draft .draft-bar .wrap{display:flex;gap:14px;align-items:flex-start}
-  body.draft .draft-bar .tag{
-    flex-shrink:0;background:var(--gold);color:var(--ink);font-weight:800;font-size:11px;
-    letter-spacing:.06em;padding:3px 9px;border-radius:6px;margin-top:3px;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.55;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
   }
-  /* 用 box-shadow 画虚框而不是 outline+offset —— outline-offset 会撑出横向溢出 */
-  body.draft [data-slot]{
-    position:relative;border-radius:4px;
-    box-shadow:0 0 0 7px var(--bg),0 0 0 8.5px var(--gold);
-  }
-  body.draft [data-slot]::after{
-    /* right 不能为负值——绝对定位元素越界会撑出横向溢出 */
-    content:attr(data-slot);position:absolute;top:-10px;right:0;
-    background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;letter-spacing:.05em;
-    padding:2px 8px;border-radius:5px;white-space:nowrap;pointer-events:none;
-  }
-  /* 空位里的说明文字，填完连同 .hint 一起删掉 */
-  .hint{color:#a5a29d}
-  .hint em{font-style:normal;color:var(--gold-deep);font-weight:700}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  .blue-label{color:var(--blue);font-weight:700;font-size:14px;letter-spacing:.04em}
+  .blue-label::before{content:"// "}
+  h2{font-size:clamp(30px,4.4vw,50px);line-height:1.06;letter-spacing:-.025em;font-weight:800}
+  section{padding:110px 0}
 
   /* ---------- 悬浮导航 ---------- */
   header{position:sticky;top:0;z-index:100;padding:14px 0 0}
@@ -66,30 +54,24 @@
     display:flex;align-items:center;justify-content:space-between;
     padding:12px 14px 12px 24px;
   }
-  .brand .name{font-family:var(--font-hand);font-weight:700;font-size:30px;line-height:1;white-space:nowrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand .name{font-family:"Caveat",cursive;font-weight:700;font-size:30px;line-height:1;letter-spacing:0;white-space:nowrap}
+  .lang{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:5px 10px;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.05);cursor:pointer}
+  .lang .flag{width:22px;height:15px;border-radius:3px;display:block;object-fit:cover}
   .nav-right{display:flex;align-items:center;gap:34px}
   .nav-links{display:flex;gap:30px;font-size:15px;font-weight:500}
-  .nav-links a{position:relative;transition:color .2s var(--ease)}
-  .nav-links a::after{
-    content:"";position:absolute;left:0;right:0;bottom:-5px;height:2px;background:var(--gold);
-    transform:scaleX(0);transform-origin:100% 50%;transition:transform .4s var(--ease);
-  }
-  .nav-links a:hover{color:var(--gold)}
-  .nav-links a:hover::after{transform:scaleX(1);transform-origin:0 50%}
-  .kontakt{
-    background:var(--ink);color:#fff;font-weight:600;font-size:15px;padding:12px 26px;border-radius:22px;
-    transition:background .25s var(--ease),box-shadow .35s var(--ease);
-  }
-  .kontakt:hover{background:#000;box-shadow:0 12px 28px -12px rgba(0,0,0,.55)}
+  .nav-links a{transition:color .2s var(--ease)}
+  .nav-links a:hover{color:var(--blue)}
+  .kontakt{background:var(--ink);color:#fff;font-weight:600;font-size:15px;padding:12px 26px;border-radius:22px;transition:transform .25s var(--ease),background .25s var(--ease)}
+  .kontakt:hover{transform:translateY(-2px);background:#000}
   @media(max-width:820px){.nav-links{display:none}}
 
   /* ---------- Hero ---------- */
   .hero{padding:16px 0 0}
   .hero-panel{
-    position:relative;background:var(--panel);
-    min-height:min(76svh,660px);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    overflow:hidden;padding:64px 24px 96px;
+    position:relative;background:var(--panel);border-radius:0;
+    height:calc(100vh - 112px);min-height:460px;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
   }
   .hero-panel::before{
     content:"";position:absolute;inset:0;
@@ -98,242 +80,146 @@
             mask-image:radial-gradient(ellipse 60% 60% at 50% 46%,#000 0%,transparent 72%);
     opacity:.9;
   }
-  /* padding-bottom 为悬在宝丽来下方的签名预留空间 */
-  .hero-title{
-    position:relative;z-index:2;display:flex;align-items:center;justify-content:center;
-    gap:26px;flex-wrap:wrap;padding-bottom:76px;
-  }
-  .hero-title h1{
-    font-size:clamp(48px,9vw,104px);font-weight:800;letter-spacing:-.04em;line-height:.95;
-    transition:transform .6s var(--ease);
-  }
-  .hero-title:has(.polaroid:hover) .t-left{transform:translateX(-34px)}
-  .hero-title:has(.polaroid:hover) .t-right{transform:translateX(34px)}
-  .hero-intro{position:relative;z-index:2;text-align:center;margin-top:14px;max-width:46ch}
-  .hero-intro .who{font-size:clamp(19px,2.4vw,24px);font-weight:800;letter-spacing:-.02em}
-  .hero-intro .what{font-size:16px;margin-top:10px;line-height:1.7}
+  .hero-title{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:26px;flex-wrap:wrap;padding:40px}
+  .hero-title h1{font-size:clamp(48px,9vw,104px);font-weight:800;letter-spacing:-.04em;line-height:.95;transition:transform .5s var(--ease)}
+  .hero-title:has(.polaroid:hover) .t-left{transform:translateX(-32px)}
+  .hero-title:has(.polaroid:hover) .t-right{transform:translateX(32px)}
   .scroll-down{
-    position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;
-    width:52px;height:52px;border-radius:50%;color:var(--ink);
-    display:flex;align-items:center;justify-content:center;
+    position:absolute;left:50%;bottom:30px;transform:translateX(-50%);z-index:3;
+    width:52px;height:52px;border-radius:50%;background:transparent;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
     animation:bob 1.8s var(--ease) infinite;transition:color .25s var(--ease);
   }
-  .scroll-down:hover{color:var(--gold)}
+  .scroll-down:hover{color:var(--blue)}
   @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
-
   .polaroid{
-    position:relative;display:block;
+    position:relative;display:block;cursor:pointer;
     width:150px;background:#fff;border-radius:14px;padding:8px 8px 22px;
-    box-shadow:0 26px 50px -20px rgba(0,0,0,.4);
-    flex-shrink:0;will-change:transform;
-    --extra-transform:rotate(10deg);
+    box-shadow:0 26px 50px -20px rgba(0,0,0,.4);transform:rotate(10deg);
+    flex-shrink:0;transition:transform .5s var(--ease);will-change:transform;
   }
-  .polaroid:hover{--extra-transform:rotate(0deg) scale(1.06)}
-  .polaroid .ph{width:100%;aspect-ratio:1/1;border-radius:8px;overflow:hidden}
+  .polaroid:hover{transform:rotate(0deg) scale(1.05)}
+  .polaroid .ph{width:100%;aspect-ratio:1/1;border-radius:8px;overflow:hidden;position:relative}
   .polaroid .ph img{width:100%;height:100%;object-fit:cover;display:block}
   .polaroid .sig{
     position:absolute;left:50%;top:100%;margin-top:7px;transform:translateX(-50%);
-    width:98%;height:auto;z-index:4;pointer-events:none;
-  }
-  /* 窄屏：缩小三件套让它们留在同一行——一旦换行，签名会压住 ":)" */
-  @media(max-width:520px){
-    .hero-title{gap:14px;padding-bottom:60px}
-    .hero-title h1{font-size:40px}
-    .polaroid{width:104px;padding:6px 6px 18px}
-    .hero-panel{padding:48px 18px 80px}
+    width:98%;max-width:none;z-index:4;pointer-events:none;
   }
 
-  /* ---------- 主案例位（整宽）---------- */
-  .feature{
-    display:grid;grid-template-columns:1.05fr .95fr;margin-top:52px;
-    background:var(--card);border:1px solid var(--line);border-radius:var(--radius-xl);
-    overflow:hidden;transition:transform .45s var(--ease),box-shadow .45s var(--ease);
-  }
-  .feature:hover{transform:translateY(-6px);box-shadow:0 34px 66px -34px rgba(0,0,0,.32)}
-  .feature .body{padding:52px 48px;display:flex;flex-direction:column;justify-content:center}
-  .feature .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-  .feature .chips span{font-size:12px;font-weight:700;color:var(--gold-deep);background:var(--gold-soft);padding:5px 11px;border-radius:20px}
-  .feature h3{font-size:clamp(24px,3vw,32px);line-height:1.25}
-  .feature p{font-size:16px;line-height:1.75;margin-top:16px}
-  .feature .nums{display:flex;gap:34px;margin-top:30px;flex-wrap:wrap}
-  .feature .nums b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;color:#c9c6c0}
-  .feature .nums span{display:block;font-size:12.5px;color:var(--muted);margin-top:7px}
-  .feature .go{margin-top:32px;color:var(--gold);font-weight:700;font-size:15.5px;display:inline-flex;align-items:center;gap:8px}
-  .feature .go svg{transition:transform .35s var(--ease)}
-  .feature:hover .go svg{transform:translate(3px,-3px)}
-  @media(max-width:860px){.feature{grid-template-columns:1fr}.feature .body{padding:38px 28px}}
+  /* ---------- Projects ---------- */
+  .proj-head .lead{color:var(--muted);font-size:17px;margin-top:18px;max-width:70ch}
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:52px}
+  .proj{background:transparent;border-radius:var(--radius);transition:transform .4s var(--ease)}
+  .proj:hover{transform:translateY(-4px)}
+  .proj .thumb{position:relative;height:300px;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .proj .thumb .eye{position:absolute;bottom:16px;right:16px;width:38px;height:38px;border-radius:50%;background:rgba(20,20,20,.7);color:#fff;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8);transition:.3s var(--ease)}
+  .proj:hover .thumb .eye{opacity:1;transform:scale(1)}
+  .g1{background:linear-gradient(135deg,#6b5a3e,#b98f52,#e8d9b0)}
+  .g2{background:linear-gradient(135deg,#161616,#3a3a3a,#6a6a6a)}
+  .g3{background:linear-gradient(135deg,#101014,#2a2530,#4a4550)}
+  .g4{background:linear-gradient(135deg,#1c3a6b,#3f6ab0,#c6d4e8)}
+  .thumb .fake{width:86%;height:78%;border-radius:10px;background:rgba(255,255,255,.14);backdrop-filter:blur(2px);border:1px solid rgba(255,255,255,.25);transform:rotate(-4deg) translateY(10px)}
+  .proj .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease)}
+  .proj:hover .thumb img{transform:scale(1.05)}
+  .proj .tag{display:inline-block;margin-top:18px;background:var(--panel);color:#444;font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px}
+  .proj h3{font-size:23px;font-weight:800;letter-spacing:-.02em;margin-top:12px}
+  .proj p{color:var(--muted);font-size:15.5px;margin-top:8px;max-width:52ch}
+  @media(max-width:760px){.proj-grid{grid-template-columns:1fr}}
 
-  /* ---------- 封面位（会动的抽象封面，换成项目图前先占着）---------- */
-  .cover-slot{
-    position:relative;background:linear-gradient(135deg,#101014,#2a2530,#413c4a);
-    min-height:380px;display:flex;align-items:center;justify-content:center;
-    padding:38px 24px;overflow:hidden;
-  }
-  .cover-slot::before{
-    content:"";position:absolute;inset:0;
-    background-image:var(--dots-dark);background-size:18px 18px;
-  }
-  .motif{position:relative;z-index:1;width:min(230px,62%);aspect-ratio:1;display:grid;place-items:center}
-  .motif .core{
-    position:absolute;width:34%;aspect-ratio:1;border-radius:50%;
-    background:linear-gradient(135deg,var(--gold),var(--gold-deep));
-    box-shadow:0 0 38px rgba(230,161,0,.42);
-  }
-  .motif .ring{
-    position:absolute;width:52%;aspect-ratio:1;border-radius:50%;
-    border:2px solid rgba(230,161,0,.3);opacity:0;
-  }
-  .motif .dots{position:absolute;bottom:-14%;display:flex;gap:12px}
-  .motif .dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18);display:block}
-  .cover-slot .cap{
-    position:absolute;left:0;right:0;bottom:16px;z-index:1;text-align:center;
-    font-size:11.5px;color:rgba(255,255,255,.42);letter-spacing:.03em;
-  }
-
-  /* 只在进入视口后播放，滚走就停——不做无人观看的动画 */
-  .motif.live .core{animation:breathe 3.4s var(--ease) infinite}
-  .motif.live .ring{animation:ripple 3.4s var(--ease) infinite}
-  .motif.live .ring.r2{animation-delay:1.13s}
-  .motif.live .ring.r3{animation-delay:2.26s}
-  .motif.live .dots i{animation:blip 3.4s var(--ease) infinite}
-  .motif.live .dots i:nth-child(2){animation-delay:.34s}
-  .motif.live .dots i:nth-child(3){animation-delay:.68s}
-
-  @keyframes breathe{
-    0%,100%{transform:scale(1);box-shadow:0 0 38px rgba(230,161,0,.42)}
-    45%    {transform:scale(1.08);box-shadow:0 0 54px rgba(230,161,0,.62)}
-  }
-  @keyframes ripple{
-    0%  {transform:scale(.7);opacity:0}
-    18% {opacity:.85}
-    100%{transform:scale(1.65);opacity:0}
-  }
-  @keyframes blip{
-    0%,72%,100%{background:rgba(255,255,255,.18);transform:scale(1)}
-    80%        {background:var(--gold);transform:scale(1.35)}
-  }
-
-  /* ---------- 次级案例位 ---------- */
-  .soon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:22px}
-  .soon{
-    border:1.5px dashed var(--line);border-radius:var(--radius);padding:34px 28px;
-    min-height:190px;display:flex;flex-direction:column;justify-content:center;
-    transition:border-color .35s var(--ease),background .35s var(--ease);
-  }
-  .soon:hover{border-color:var(--gold);background:rgba(230,161,0,.04)}
-  .soon .n{font-family:var(--serif);font-style:italic;font-size:30px;color:#c9c6c0;font-weight:700}
-  .soon h4{font-size:17px;font-weight:800;margin-top:10px;color:#9a9791}
-  .soon p{font-size:14px;color:#adaaa4;line-height:1.65;margin-top:8px}
-  @media(max-width:760px){.soon-grid{grid-template-columns:1fr}}
-
-  /* ---------- 关于 ---------- */
+  /* ---------- About ---------- */
   .about-panel{background:var(--panel);border-radius:var(--radius-xl);padding:74px 60px}
-  .about-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+  .about-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;margin-top:8px}
   .about-grid h2{margin:16px 0 22px}
-  .about-grid p{font-size:16.5px;line-height:1.85}
+  .about-grid p{color:#3f3d39;font-size:16.5px;line-height:1.8}
   .about-grid p + p{margin-top:18px}
-  /* 宽度用 width:100% + max-width，避免 max-width:100% 相对于由自身撑开的父级循环求值 */
-  .about-photo{justify-self:center;width:100%;max-width:330px}
+  .about-photo{justify-self:center}
   .about-square{
-    width:100%;max-width:330px;aspect-ratio:1/1;border-radius:18px;overflow:hidden;
-    box-shadow:0 26px 50px -20px rgba(0,0,0,.4);will-change:transform;
+    width:330px;max-width:100%;aspect-ratio:1/1;border-radius:18px;overflow:hidden;
+    box-shadow:0 26px 50px -20px rgba(0,0,0,.4);
+    transition:transform .5s var(--ease);will-change:transform;
   }
-  .about-square img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s var(--ease)}
-  .about-photo:hover .about-square img{transform:scale(1.06)}
-  /* minmax(0,1fr)：单纯 1fr 的轨道下限是内容 min-content，会被固定宽度撑破窄屏 */
-  @media(max-width:820px){.about-grid{grid-template-columns:minmax(0,1fr);gap:36px}.about-panel{padding:48px 28px}}
+  .about-square img{width:100%;height:100%;object-fit:cover;display:block}
+  .about-square:hover{transform:scale(1.04)}
+  @media(max-width:820px){.about-grid{grid-template-columns:1fr;gap:36px}.about-panel{padding:48px 28px}}
 
-  /* ---------- 能力位 ---------- */
+  /* ---------- Services ---------- */
+  .svc-head .lead{color:var(--muted);font-size:17px;margin-top:18px;max-width:78ch}
   .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px}
-  .svc{
-    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:34px 30px;
-    transition:transform .4s var(--ease),box-shadow .4s var(--ease);
-  }
-  .svc:hover{transform:translateY(-6px);box-shadow:0 24px 48px -26px rgba(0,0,0,.28)}
-  .svc .ic{
-    width:46px;height:46px;border-radius:14px;background:var(--gold-soft);color:var(--gold-deep);
-    display:flex;align-items:center;justify-content:center;margin-bottom:20px;
-    transition:transform .45s var(--ease-spring);
-  }
-  .svc:hover .ic{transform:rotate(-8deg) scale(1.08)}
+  .svc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:34px 30px;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+  .svc:hover{transform:translateY(-5px);box-shadow:0 20px 44px -24px rgba(0,0,0,.25)}
+  .svc .ic{width:46px;height:46px;border-radius:14px;background:#fdf1cf;color:var(--blue);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
   .svc h4{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-bottom:12px}
-  .svc p{font-size:15px;line-height:1.75}
-  /* 中间这张是高亮款：想强调哪一项就把 hl 挪到哪一张上 */
-  .svc.hl{background:var(--gold);border-color:var(--gold)}
+  .svc p{color:var(--muted);font-size:15px;line-height:1.7}
+  .svc.hl{background:var(--blue);border-color:var(--blue);color:var(--ink)}
   .svc.hl .ic{background:rgba(0,0,0,.12);color:var(--ink)}
-  .svc.hl .hint{color:rgba(20,20,20,.6)}
-  .svc.hl .hint em{color:var(--ink)}
+  .svc.hl p{color:rgba(20,20,20,.82)}
+  .svc-cta{text-align:center;margin-top:40px}
+  .svc-cta a{color:var(--blue);font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:8px}
+  .svc-cta a:hover{color:var(--blue-deep)}
   @media(max-width:760px){.svc-grid{grid-template-columns:1fr}}
 
-  /* ---------- 联系 ---------- */
-  .contact-panel{
-    background:var(--card);border:1px solid var(--line);border-radius:var(--radius-xl);
-    padding:60px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;
-  }
+  /* ---------- FAQ ---------- */
+  .faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}
+  .faq-left h2{margin:16px 0 20px}
+  .faq-left p{color:var(--muted);font-size:16px;max-width:38ch}
+  .faq-list{display:flex;flex-direction:column;gap:16px}
+  .qa{background:var(--panel);border-radius:16px;overflow:hidden}
+  .qa summary{list-style:none;cursor:pointer;padding:22px 26px;display:flex;align-items:center;gap:14px;font-size:16.5px;font-weight:600}
+  .qa summary::-webkit-details-marker{display:none}
+  .qa summary .chev{margin-left:auto;transition:transform .3s var(--ease);color:#555}
+  .qa[open] summary .chev{transform:rotate(180deg)}
+  .qa .ans{padding:0 26px 24px;color:var(--muted);font-size:15.5px;line-height:1.7}
+  @media(max-width:820px){.faq-grid{grid-template-columns:1fr;gap:32px}}
+
+  /* ---------- Contact ---------- */
+  .contact-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-xl);padding:60px;display:grid;grid-template-columns:1fr 1fr;gap:56px}
   .contact-left h2{margin:16px 0 20px}
-  .contact-left p{font-size:16.5px;max-width:40ch}
-  .contact-deco{
-    margin-top:40px;height:120px;background-image:var(--dots);background-size:15px 15px;
-    -webkit-mask-image:linear-gradient(90deg,#000,transparent);mask-image:linear-gradient(90deg,#000,transparent);
-  }
-  .contact-rows{display:flex;flex-direction:column;gap:14px}
-  .crow{
-    display:flex;align-items:center;gap:16px;background:#f6f5f3;border:1px solid var(--line);
-    border-radius:16px;padding:18px 20px;transition:border-color .3s var(--ease),transform .3s var(--ease);
-  }
-  .crow:hover{border-color:var(--gold);transform:translateX(4px)}
-  .crow .ic{
-    flex-shrink:0;width:42px;height:42px;border-radius:12px;background:var(--card);
-    border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold-deep);
-  }
-  .crow .txt{min-width:0}
-  .crow .txt b{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .crow .txt span{display:block;font-size:16px;font-weight:700;margin-top:3px;word-break:break-all}
-  .copy{
-    margin-left:auto;flex-shrink:0;background:var(--ink);color:#fff;border:none;border-radius:11px;
-    padding:10px 16px;font-size:13.5px;font-weight:700;cursor:pointer;
-    transition:background .2s var(--ease),transform .2s var(--ease);
-  }
-  .copy:hover{background:#000;transform:translateY(-1px)}
-  .copy.done{background:var(--verified)}
+  .contact-left p{color:var(--muted);font-size:16.5px;max-width:40ch}
+  .contact-deco{margin-top:40px;height:150px;background-image:var(--dots);background-size:15px 15px;-webkit-mask-image:linear-gradient(90deg,#000,transparent);mask-image:linear-gradient(90deg,#000,transparent);opacity:.9}
+  .socials{display:flex;gap:12px;margin-top:8px}
+  .socials a{width:44px;height:44px;border-radius:12px;background:var(--panel);display:flex;align-items:center;justify-content:center;color:#555;transition:.25s var(--ease)}
+  .socials a:hover{background:var(--ink);color:#fff}
+  .form-box{background:#f6f5f3;border-radius:var(--radius);padding:30px}
+  .field{margin-bottom:20px}
+  .field label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+  .field input,.field textarea{width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font:inherit;font-size:15px;color:var(--ink);transition:border-color .2s var(--ease),box-shadow .2s var(--ease)}
+  .field input::placeholder,.field textarea::placeholder{color:#a5a29d}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(230,161,0,.2)}
+  .field textarea{resize:vertical;min-height:130px}
+  .submit{width:100%;background:var(--ink);color:#fff;border:none;border-radius:14px;padding:16px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;transition:background .25s var(--ease),transform .25s var(--ease)}
+  .submit:hover{background:#000;transform:translateY(-2px)}
   @media(max-width:820px){.contact-panel{grid-template-columns:1fr;gap:36px;padding:40px 26px}}
 
   /* ---------- Footer ---------- */
   footer{text-align:center;padding:70px 0 60px}
-  .foot-logo{font-family:var(--font-hand);font-size:34px;font-weight:700}
-  .foot-tag{color:var(--muted);font-size:15px;margin-top:4px}
-  .foot-nav{display:flex;gap:28px;justify-content:center;margin-top:28px;font-size:15px;font-weight:500;flex-wrap:wrap}
-  .foot-nav a{color:var(--muted);transition:color .2s var(--ease)}
+  .foot-logo{font-size:22px;font-weight:800;letter-spacing:-.02em}
+  .foot-tag{color:var(--muted);font-size:15px;margin-top:8px}
+  .foot-nav{display:flex;gap:28px;justify-content:center;margin-top:28px;font-size:15px;font-weight:500}
+  .foot-nav a{color:var(--muted)}
   .foot-nav a:hover{color:var(--ink)}
   .foot-copy{margin-top:32px;font-size:13px;color:#a5a29d}
+
+  /* ---------- Reveal ---------- */
 </style>
 </head>
-<body class="draft">
-
-<!-- ============ 待填提示条（填完删掉 <body> 上的 class="draft" 即整体消失）============ -->
-<div class="draft-bar">
-  <div class="wrap">
-    <span class="tag">骨架</span>
-    <div>
-      这一页的<b>版式、动效、交互都做好了，文字和作品内容留成空位</b>——带黄色虚线框的地方等你填。
-      填完后把 <b>&lt;body class="draft"&gt;</b> 里的 <b>class="draft"</b> 删掉，虚线框和这条提示会一起消失。
-      每个空位里的灰字说明也记得一并删掉。
-    </div>
-  </div>
-</div>
+<body>
 
 <!-- ============ 导航 ============ -->
 <header>
   <div class="wrap">
     <nav class="nav">
-      <div class="brand"><div class="name vt-brand">Xinyue Pan</div></div>
+      <div class="brand">
+        <div class="name">Xinyue Pan</div>
+        <div class="lang"><svg class="flag" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg"><rect width="30" height="20" fill="#de2910"/><g fill="#ffde00"><path d="M6 3.2l.86 2.65-2.25-1.64h2.78L5.14 5.85z"/><path d="M11.5 2.1l.28.98-.86-.5h1.06l-.86.5z"/><path d="M12.8 4.2l.04 1.02-.62-.8.98.3-.98.28z"/><path d="M12.8 6.9l-.56.85.06-1.02.5.94-.98-.32z"/><path d="M11.5 8.9l-.86-.5h1.06l-.86.5.28-.98z"/></g></svg> <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#555" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
       <div class="nav-right">
         <div class="nav-links">
-          <a href="#cases">案例</a>
-          <a href="#about">关于</a>
-          <a href="#skills">能力</a>
+          <a href="#projekte">Projects</a>
+          <a href="#ueber">About</a>
+          <a href="#services">Services</a>
+          <a href="#faq">FAQ</a>
         </div>
-        <a href="#contact" class="kontakt">联系我</a>
+        <a href="#kontakt" class="kontakt">Contact</a>
       </div>
     </nav>
   </div>
@@ -341,152 +227,159 @@
 
 <!-- ============ Hero ============ -->
 <section class="hero">
-  <div class="hero-panel tilt-scene" data-tilt-zone data-magnetic-zone>
+  <div class="hero-panel">
     <div class="hero-title">
       <h1 class="t-left">Hello!</h1>
-      <a class="polaroid magnetic tilt" href="gallery.html" aria-label="打开照片集" data-magnetic="10" data-tilt="9">
-        <div class="ph"><img src="assets/img/hero-photo.webp" alt="潘新月" width="420" height="420" fetchpriority="high"></div>
-        <img class="sig" src="assets/img/signature.webp" alt="" width="600" height="259" aria-hidden="true">
-      </a>
+      <a class="polaroid" href="gallery.html" aria-label="Open gallery"><div class="ph"><img src="assets/img/hero-photo.webp" alt="Xinyue Pan"></div><img class="sig" src="assets/img/signature.webp" alt="xinyue"></a>
       <h1 class="t-right">:)</h1>
     </div>
-    <div class="hero-intro" data-slot="待填：你是谁 + 一句话定位">
-      <div class="who hint"><em>你的名字 · 你的角色</em></div>
-      <p class="what hint">
-        一到两行自我定位。落地的写法是：<em>做什么的</em> + <em>最有说服力的一个凭证</em>，
-        然后一句你想让人记住的话。
-      </p>
-    </div>
-    <a href="#cases" class="scroll-down" aria-label="向下查看案例">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <a href="#projekte" class="scroll-down" aria-label="Scroll to projects">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
   </div>
 </section>
 
-<!-- ============ 案例 ============ -->
-<section id="cases">
-  <div class="wrap" data-reveal>
-    <span class="kicker">案例</span>
-    <h2 style="margin-top:20px;max-width:20ch" class="hint" data-slot="待填：这一屏的主标题">一句话说清你想让人看到什么。</h2>
-    <p class="lead hint">主标题下的一段引导语。这里适合交代你的选择逻辑——为什么放这几个案例，希望对方从中看到什么。</p>
+<!-- ============ Projekte ============ -->
+<section id="projekte">
+  <div class="wrap proj-head" data-reveal>
+    <span class="blue-label">PROJECTS</span>
+    <h2 style="margin-top:20px">Clear design. Clean execution.</h2>
+    <p class="lead">Selected projects that show how ideas turn into functional, modern websites — with a clear concept, good design, and an implementation that works on every device.</p>
   </div>
-
-  <!-- 主案例位：整宽大卡。href 改成你的案例页 -->
-  <div class="wrap">
-    <a class="feature" href="case-voice-layout.html" data-reveal data-slot="待填：主案例">
-      <div class="cover-slot">
-        <div class="motif" data-motif aria-hidden="true">
-          <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
-          <span class="core"></span>
-          <span class="dots"><i></i><i></i><i></i></span>
-        </div>
-        <div class="cap">封面位 · 换成你的项目图 / 动效截帧</div>
-      </div>
-      <div class="body">
-        <div class="chips"><span>标签一</span><span>标签二</span><span>标签三</span></div>
-        <h3 class="hint">主案例标题</h3>
-        <p class="hint">
-          两三行简介：你在这个项目里的角色、时间跨度、做到了什么程度。
-          这张卡是整页最重要的位置，建议放你最能撑场面的那个项目。
-        </p>
-        <div class="nums">
-          <div><b>——</b><span>指标一</span></div>
-          <div><b>——</b><span>指标二</span></div>
-          <div><b>——</b><span>指标三</span></div>
-        </div>
-        <span class="go">看完整案例
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </span>
-      </div>
+  <div class="wrap proj-grid">
+    <a class="proj" data-reveal href="#">
+      <div class="thumb g1"><img src="project-one.jpg" alt="Project One"><div class="eye"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg></div></div>
+      <span class="tag">Web Design, Website Re-Design</span>
+      <h3>Project One</h3>
+      <p>A short, neutral project description as a placeholder. Your own project will go here later.</p>
     </a>
-  </div>
-
-  <!-- 次级案例位：不够三个就删掉多余的，两栏一栏都不影响版式 -->
-  <div class="wrap soon-grid" data-stagger="90" data-slot="待填：其余案例">
-    <div class="soon"><div class="n">02</div><h4>案例位</h4><p>建议放一个和主案例互补的——比如快节奏、需求不清晰、或者复盘失败的。</p></div>
-    <div class="soon"><div class="n">03</div><h4>案例位</h4><p>可以是跨端 / 设计系统 / 从 0 到 1 的项目。</p></div>
-    <div class="soon"><div class="n">04</div><h4>案例位</h4><p>暂时没有第四个就把这一栏删掉，三栏改两栏不影响版式。</p></div>
+    <a class="proj" data-reveal href="#">
+      <div class="thumb g2"><img src="project-two.png" alt="Project Two"><div class="eye"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg></div></div>
+      <span class="tag">Web Design, Template Design</span>
+      <h3>Project Two</h3>
+      <p>Placeholder text for a second project. Category, title and description are freely editable.</p>
+    </a>
+    <a class="proj" data-reveal href="portfolio-voice-layout.html">
+      <div class="thumb g3"><img src="project-three.gif" alt="语音厅布局系统"><div class="eye"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg></div></div>
+      <span class="tag">系统设计 · 长期主导 · 专利</span>
+      <h3>语音厅布局系统</h3>
+      <p>多人语聊唯一设计师,独立主导两年——从能用的容器,到可复用的空间系统标准与专利规范。</p>
+    </a>
+    <a class="proj" data-reveal href="#">
+      <div class="thumb g4"><img src="project-four.webp" alt="Project Four"><div class="eye"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg></div></div>
+      <span class="tag">Web Design, Website Re-Design</span>
+      <h3>Project Four</h3>
+      <p>Placeholder description for a fourth project in the portfolio grid.</p>
+    </a>
   </div>
 </section>
 
-<!-- ============ 关于 ============ -->
-<section id="about">
+<!-- ============ Über mich ============ -->
+<section id="ueber">
   <div class="wrap">
     <div class="about-panel" data-reveal>
       <div class="about-grid">
-        <div data-slot="待填：自我介绍">
-          <span class="kicker">关于</span>
-          <h2 class="hint">一句能代表你的话。</h2>
-          <p class="hint">
-            第一段：你是谁、怎么工作、在意什么。别写成简历摘要——写成"如果面对面，你会怎么介绍自己"。
-          </p>
-          <p class="hint">
-            第二段：你的经验、态度、标准。这里适合放一个具体的判断或习惯，比空泛的形容词有效得多。
-          </p>
+        <div>
+          <span class="blue-label">ABOUT</span>
+          <h2>Websites people can actually use.</h2>
+          <p>【Placeholder】A first paragraph about you: who you are, how you work, and what you believe in. Good design is at its best when it barely needs explaining.</p>
+          <p>【Placeholder】A second paragraph: your experience, your attitude, your standards. Clear design meets a real understanding of what people actually need.</p>
         </div>
         <div class="about-photo">
-          <div class="about-square">
-            <img src="assets/img/hero-portrait.webp" alt="潘新月" width="800" height="800" loading="lazy" decoding="async">
-          </div>
+          <div class="about-square"><img src="assets/img/hero-portrait.webp" width="800" height="800" loading="lazy" alt="Xinyue Pan"></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ 能力 ============ -->
-<section id="skills">
-  <div class="wrap" data-reveal>
-    <span class="kicker">能力</span>
-    <h2 style="margin-top:20px" class="hint" data-slot="待填：这一屏的主标题">你能带进团队的几件事。</h2>
-    <p class="lead hint">一句引导语。这一屏适合写"做事方式"而不是"软件技能清单"——前者更难被替代。</p>
+<!-- ============ Services ============ -->
+<section id="services">
+  <div class="wrap svc-head" data-reveal>
+    <span class="blue-label">SERVICES</span>
+    <h2 style="margin-top:20px">What I can do for you.</h2>
+    <p class="lead">I help you build a website that looks good, is clearly structured, and simply works for your visitors — from the first idea to launch.</p>
   </div>
-  <div class="wrap svc-grid" data-stagger="110" data-slot="待填：三项能力">
-    <div class="svc">
-      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/></svg></div>
-      <h4 class="hint">能力一</h4>
-      <p class="hint">用一个具体项目里的例子说明这项能力，比形容词管用。图标可以换成更贴切的。</p>
+  <div class="wrap svc-grid">
+    <div class="svc" data-reveal>
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <h4>SEO &amp; Performance</h4>
+      <p>A clean structure, understandable content and a solid technical base, so your website loads fast and gets found more easily.</p>
     </div>
-    <div class="svc hl">
-      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 7v6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h4 class="hint">能力二（高亮位）</h4>
-      <p class="hint">这张是黄底高亮款。把你最想被记住的那一项放这里；想换位置就把 <em>hl</em> 这个 class 挪到别的卡上。</p>
+    <div class="svc hl" data-reveal>
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <h4>Web Design &amp; Launch</h4>
+      <p>Clear, responsive websites that are thoughtfully designed and cleanly built — from the first idea to the finished site.</p>
     </div>
-    <div class="svc">
-      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h4 class="hint">能力三</h4>
-      <p class="hint">三张是刚好的数量。要加第四张的话，把 <em>.svc-grid</em> 的列数从 3 改成 2 会更好看。</p>
+    <div class="svc" data-reveal>
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h10M4 17h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <h4>UX Design &amp; Structure</h4>
+      <p>Well-considered page structures, clear layouts and user guidance that lets visitors find their way quickly.</p>
+    </div>
+  </div>
+  <div class="wrap svc-cta" data-reveal>
+    <a href="#kontakt">Start your website project <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="wrap faq-grid">
+    <div class="faq-left" data-reveal>
+      <span class="blue-label">FAQ</span>
+      <h2>Your questions – my answers.</h2>
+      <p>Here you'll find short answers to common questions about web design, UX/UI, website projects, and working with me.</p>
+    </div>
+    <div class="faq-list" data-reveal>
+      <details class="qa" open>
+        <summary>01. Who do you design websites for?<span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></summary>
+        <div class="ans">【Placeholder】For startups, freelancers, local businesses and personal brands. What matters to me is a clean structure, good design, and an interface that's easy to understand.</div>
+      </details>
+      <details class="qa">
+        <summary>02. Can you rework an existing website?<span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></summary>
+        <div class="ans">【Placeholder】Yes. Add your answer text here.</div>
+      </details>
+      <details class="qa">
+        <summary>03. How can I start a project with you?<span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></summary>
+        <div class="ans">【Placeholder】Add your answer text here.</div>
+      </details>
+      <details class="qa">
+        <summary>04. What does your design process look like?<span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></summary>
+        <div class="ans">【Placeholder】Add your answer text here.</div>
+      </details>
+      <details class="qa">
+        <summary>05. How long does a website project take?<span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></summary>
+        <div class="ans">【Placeholder】Add your answer text here.</div>
+      </details>
+      <details class="qa">
+        <summary>06. What do you need before we start?<span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></summary>
+        <div class="ans">【Placeholder】Add your answer text here.</div>
+      </details>
     </div>
   </div>
 </section>
 
-<!-- ============ 联系 ============ -->
-<section id="contact">
+<!-- ============ Kontakt ============ -->
+<section id="kontakt">
   <div class="wrap">
     <div class="contact-panel" data-reveal>
       <div class="contact-left">
-        <span class="kicker">联系</span>
-        <h2 class="hint" data-slot="待填：招呼语">想聊聊的话，随时。</h2>
-        <p class="hint">一句让人愿意点击的话。写得随意一点比写得客气有效。</p>
-        <div class="contact-deco" aria-hidden="true"></div>
-      </div>
-      <div class="contact-rows" data-slot="待填：真实联系方式">
-        <div class="crow">
-          <span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2"/></svg></span>
-          <span class="txt"><b>邮箱</b><span id="mail" class="hint">你的邮箱@example.com</span></span>
-          <button class="copy" type="button" data-copy="#mail">复制</button>
-        </div>
-        <div class="crow">
-          <span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3c-4.97 0-9 3.36-9 7.5 0 2.4 1.36 4.54 3.47 5.9L6 20l3.3-1.8c.86.2 1.76.3 2.7.3 4.97 0 9-3.36 9-7.5S16.97 3 12 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
-          <span class="txt"><b>微信</b><span id="wechat" class="hint">你的微信号</span></span>
-          <button class="copy" type="button" data-copy="#wechat">复制</button>
-        </div>
-        <div class="crow">
-          <span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 7H3v10h6a3 3 0 000-6 2.5 2.5 0 000-4zm-4 2h3.5a1 1 0 010 2H5V9zm0 4h4a1 1 0 010 2H5v-2zm12-6h4v1.5h-4V7zm2 2.5c-2 0-3.5 1.6-3.5 3.75S17 17 19 17s3.2-1.2 3.4-2.5h-1.9c-.2.5-.7.8-1.4.8-.9 0-1.5-.6-1.6-1.5h5c.3-2.4-1.1-4.3-3.5-4.3zm-1.4 3c.1-.9.7-1.4 1.5-1.4s1.3.5 1.4 1.4h-2.9z"/></svg></span>
-          <span class="txt"><b>作品平台</b><span id="behance" class="hint">Behance / 站酷 主页链接</span></span>
-          <button class="copy" type="button" data-copy="#behance">复制</button>
+        <span class="blue-label">CONTACT</span>
+        <h2>Ready for your next project.</h2>
+        <p>Got an idea, an existing website, or just a few questions? Feel free to send me a message — I'd love to hear from you.</p>
+        <div class="contact-deco"></div>
+        <div class="socials">
+          <a href="#" aria-label="Behance"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 7H3v10h6a3 3 0 000-6 2.5 2.5 0 000-4zm-4 2h3.5a1 1 0 010 2H5V9zm0 4h4a1 1 0 010 2H5v-2zm12-6h4v1.5h-4V7zm2 2.5c-2 0-3.5 1.6-3.5 3.75S17 17 19 17s3.2-1.2 3.4-2.5h-1.9c-.2.5-.7.8-1.4.8-.9 0-1.5-.6-1.6-1.5h5c.3-2.4-1.1-4.3-3.5-4.3zm-1.4 3c.1-.9.7-1.4 1.5-1.4s1.3.5 1.4 1.4h-2.9z"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 002.5 6a2.5 2.5 0 105 0 2.5 2.5 0 00-2.52-2.5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21h-4z"/></svg></a>
+          <a href="#" aria-label="E-Mail"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2"/></svg></a>
         </div>
       </div>
+      <form class="form-box" onsubmit="return false">
+        <div class="field"><label>Name</label><input type="text" placeholder="Your name"></div>
+        <div class="field"><label>Email</label><input type="email" placeholder="you@example.com"></div>
+        <div class="field"><label>Message</label><textarea placeholder="Your message could go here…"></textarea></div>
+        <button class="submit" type="submit">Send message</button>
+      </form>
     </div>
   </div>
 </section>
@@ -494,30 +387,19 @@
 <!-- ============ Footer ============ -->
 <footer>
   <div class="wrap">
-    <div class="foot-logo">Xinyue Pan</div>
-    <div class="foot-tag hint" data-slot="待填：一句签名">三个词概括你自己。</div>
+    <div class="foot-logo">潘新月</div>
+    <div class="foot-tag">Clear design. Clean execution.</div>
     <div class="foot-nav">
-      <a href="#cases">案例</a>
-      <a href="#about">关于</a>
-      <a href="#skills">能力</a>
-      <a href="#contact">联系</a>
-      <a href="gallery.html">照片集</a>
+      <a href="#projekte">Projects</a>
+      <a href="#ueber">About</a>
+      <a href="#services">Services</a>
+      <a href="#faq">FAQ</a>
+      <a href="#kontakt">Contact</a>
     </div>
-    <div class="foot-copy">© 2026 潘新月</div>
+    <div class="foot-copy">© 2026 潘新月 · All rights reserved</div>
   </div>
 </footer>
 
 <script src="assets/js/motion.js" defer></script>
-<script>
-  // 封面动效只在进入视口时播放，滚走就停——不做无人观看的动画
-  (function () {
-    var m = document.querySelector('[data-motif]');
-    if (!m) return;
-    if (!('IntersectionObserver' in window)) { m.classList.add('live'); return; }
-    new IntersectionObserver(function (es) {
-      es.forEach(function (e) { m.classList.toggle('live', e.isIntersecting); });
-    }, { threshold: .25 }).observe(m);
-  })();
-</script>
 </body>
 </html>
