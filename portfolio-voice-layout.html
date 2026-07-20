@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>语音厅布局系统 — 潘新月 · 案例</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     案例三 · 语音厅布局系统（耐力/稳 · 系统思维）
+     视觉基调复用作品集主色（暖白 + 强调黄 + Plus Jakarta Sans）
+     骨架偏系统化：时间轴 / 精确网格 / 克制
+     ⚠ 全站无绝对营收数值（脱敏红线）；已验证 vs 预计分区标注
+     ============================================================ */
+  :root{
+    --bg:#f5f4f1;
+    --panel:#ececea;
+    --card:#ffffff;
+    --ink:#141414;
+    --muted:#6d6b67;
+    --line:#e4e2de;
+    --gold:#e6a100;
+    --gold-deep:#b87d00;
+    --gold-soft:#fdf1cf;
+    --verified:#1f9d63;      /* 已验证=绿 */
+    --projected:#8a7cff;     /* 预计=紫，视觉上明显区分 */
+    --radius-xl:34px;
+    --radius:20px;
+    --radius-s:14px;
+    --maxw:1180px;
+    --ease:cubic-bezier(.22,1,.36,1);
+    --dots:radial-gradient(circle,#cfcdc8 1.3px,transparent 1.6px);
+    --serif:"Georgia","Songti SC",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  section{padding:104px 0}
+  .kicker{color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+  .kicker::before{content:"// "}
+  h2{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.025em;font-weight:800}
+  h3{font-size:clamp(20px,2.4vw,26px);font-weight:800;letter-spacing:-.02em}
+  .lead{color:var(--muted);font-size:17px;line-height:1.75;max-width:64ch}
+  .stage-num{font-family:var(--serif);font-style:italic;color:var(--gold);font-weight:700}
+
+  /* ---------- 进度导航 ---------- */
+  header{position:sticky;top:0;z-index:100;padding:14px 0 0}
+  .nav{
+    background:rgba(255,255,255,.88);backdrop-filter:blur(14px);
+    border-radius:22px;box-shadow:0 10px 40px -18px rgba(0,0,0,.22);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 16px 12px 22px;
+  }
+  .nav .back{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14.5px;color:var(--muted);transition:color .2s}
+  .nav .back:hover{color:var(--ink)}
+  .nav .title{font-weight:800;font-size:15px;letter-spacing:-.01em}
+  .nav .chips{display:flex;gap:8px}
+  .nav .chip{font-size:12px;font-weight:700;color:var(--gold-deep);background:var(--gold-soft);padding:5px 11px;border-radius:20px}
+  @media(max-width:760px){.nav .chips{display:none}}
+
+  /* ---------- ① Hero ---------- */
+  .hero{padding:70px 0 60px;position:relative}
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:0;
+    background-image:var(--dots);background-size:16px 16px;
+    -webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 40%,#000,transparent 72%);
+            mask-image:radial-gradient(ellipse 70% 55% at 50% 40%,#000,transparent 72%);
+    opacity:.7;
+  }
+  .hero .wrap{position:relative;z-index:1}
+  .hero .span-tag{
+    display:inline-flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:var(--muted);
+    background:var(--card);border:1px solid var(--line);padding:7px 16px;border-radius:100px;
+    box-shadow:0 6px 20px -12px rgba(0,0,0,.2);margin-bottom:26px;
+  }
+  .hero .span-tag b{color:var(--ink);font-weight:800}
+  .hero h1{
+    font-size:clamp(34px,5.8vw,68px);line-height:1.08;letter-spacing:-.035em;font-weight:800;max-width:16ch;
+  }
+  .hero h1 .g{color:var(--gold)}
+  .hero .sub{margin-top:24px;font-size:19px;color:var(--muted);max-width:52ch;line-height:1.7}
+  .hero .metrics{display:flex;gap:44px;margin-top:48px;flex-wrap:wrap}
+  .hero .metrics .m b{display:block;font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1}
+  .hero .metrics .m span{display:block;font-size:14px;color:var(--muted);margin-top:8px}
+  .hero .metrics .m .vf{color:var(--verified);font-size:11px;font-weight:700;letter-spacing:.05em;margin-top:6px;display:inline-flex;align-items:center;gap:5px}
+  .vf-dot{width:7px;height:7px;border-radius:50%;background:var(--verified);display:inline-block}
+
+  /* ---------- ② 为什么放这个项目 ---------- */
+  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px}
+  .why-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:34px 30px;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+  .why-card:hover{transform:translateY(-5px);box-shadow:0 22px 46px -26px rgba(0,0,0,.24)}
+  .why-card .ic{width:46px;height:46px;border-radius:14px;background:var(--gold-soft);color:var(--gold-deep);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+  .why-card h4{font-size:20px;font-weight:800;margin-bottom:10px}
+  .why-card p{color:var(--muted);font-size:15px;line-height:1.7}
+  .why-note{margin-top:36px;font-size:15px;color:var(--muted);padding-left:16px;border-left:3px solid var(--gold)}
+  @media(max-width:760px){.why-grid{grid-template-columns:1fr}}
+
+  /* ---------- ③ 演化总览 时间轴 ---------- */
+  .overview{background:var(--panel)}
+  .timeline{margin-top:56px;position:relative}
+  .timeline::before{content:"";position:absolute;top:34px;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 14px)}
+  .tl-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .tl-step{position:relative;padding-top:0}
+  .tl-step .node{width:16px;height:16px;border-radius:50%;background:var(--card);border:3px solid var(--gold);position:relative;z-index:2;margin-bottom:22px}
+  .tl-step .lvl{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-deep)}
+  .tl-step .when{font-size:13px;color:var(--muted);margin:4px 0 10px}
+  .tl-step .name{font-size:18px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
+  .tl-step .desc{font-size:14px;color:var(--muted);line-height:1.6}
+  .tl-step .arrow{display:none}
+  @media(max-width:860px){
+    .tl-row{grid-template-columns:1fr;gap:0}
+    .timeline::before{top:0;left:7px;right:auto;width:2px;height:100%;background:repeating-linear-gradient(180deg,var(--line) 0 8px,transparent 8px 14px)}
+    .tl-step{padding-left:34px;padding-bottom:34px}
+    .tl-step .node{position:absolute;left:0;top:2px;margin:0}
+  }
+
+  /* ---------- 通用 阶段块 ---------- */
+  .stage{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+  .stage.rev .s-text{order:2}
+  .s-text .stage-label{display:flex;align-items:baseline;gap:12px;margin-bottom:18px}
+  .s-text .stage-label .n{font-size:40px}
+  .s-text .stage-label .t{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .s-text h3{margin-bottom:16px}
+  .s-text .desc{color:var(--muted);font-size:16px;line-height:1.75;margin-bottom:24px}
+  .prob-sol{display:flex;flex-direction:column;gap:12px;margin-bottom:26px}
+  .ps-item{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.55}
+  .ps-item .tag{flex-shrink:0;font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px;margin-top:2px}
+  .ps-item .tag.p{background:#f3e6e3;color:#b0524a}
+  .ps-item .tag.s{background:var(--gold-soft);color:var(--gold-deep)}
+  .payoff{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-s);padding:18px 20px;display:flex;gap:12px;align-items:flex-start}
+  .payoff .ic{flex-shrink:0;color:var(--gold);margin-top:2px}
+  .payoff .txt b{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--gold-deep);display:block;margin-bottom:4px}
+  .payoff .txt p{font-size:14.5px;color:var(--muted);line-height:1.6}
+  @media(max-width:860px){.stage{grid-template-columns:1fr;gap:36px}.stage.rev .s-text{order:0}}
+
+  /* ---------- 视觉占位（线框示意，不用真图也能读懂布局逻辑）---------- */
+  .mock{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:0 24px 60px -30px rgba(0,0,0,.3)}
+  .mock .frame{border-radius:var(--radius-s);overflow:hidden;position:relative;aspect-ratio:9/13;background:linear-gradient(180deg,#1a1622,#2a2333)}
+  .mock .cap{font-size:12.5px;color:var(--muted);margin-top:14px;text-align:center}
+  /* 舞台线框元素 */
+  .rm{position:absolute;border-radius:8px}
+  .rm.subtitle{top:8%;left:8%;right:8%;height:6%;background:rgba(255,255,255,.14);border:1px dashed rgba(255,255,255,.35)}
+  .rm.host{top:20%;left:50%;transform:translateX(-50%);width:38%;aspect-ratio:1;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-deep));box-shadow:0 0 40px rgba(230,161,0,.4)}
+  .rm.wave{top:16%;left:50%;transform:translateX(-50%);width:52%;aspect-ratio:1;border-radius:50%;border:2px solid rgba(230,161,0,.3)}
+  .rm.mic{width:15%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3)}
+  .rm.gift{bottom:10%;left:8%;width:26%;height:12%;background:rgba(255,255,255,.1);border:1px dashed rgba(255,255,255,.3)}
+  .rm.slot{bottom:10%;right:8%;width:26%;height:12%;background:rgba(230,161,0,.16);border:1px dashed rgba(230,161,0,.5)}
+  .rm.lbl{color:rgba(255,255,255,.65);font-size:9px;display:flex;align-items:center;justify-content:center;text-align:center;padding:2px}
+
+  /* ---------- ⑥ 核心决策 30→70 ---------- */
+  .decision{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+  .decision::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1.3px,transparent 1.6px);background-size:20px 20px;opacity:.5;pointer-events:none}
+  .decision .wrap{position:relative;z-index:1}
+  .decision .kicker{color:var(--gold)}
+  .decision h2{color:#fff;margin-top:18px;max-width:18ch}
+  .decision .quote{font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.6vw,28px);line-height:1.5;color:#fff;max-width:22ch;margin:34px 0}
+  .balance{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;margin-top:44px}
+  .bal-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:var(--radius);padding:26px}
+  .bal-card h4{font-size:16px;font-weight:800;margin-bottom:12px;color:#fff}
+  .bal-card ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .bal-card li{font-size:14px;color:rgba(255,255,255,.72);display:flex;gap:8px}
+  .bal-card li::before{content:"—";color:var(--gold)}
+  .bal-vs{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--gold)}
+  .bal-out{background:var(--gold);border-color:var(--gold)}
+  .bal-out h4,.bal-out li{color:var(--ink)}
+  .bal-out li{color:rgba(20,20,20,.78)}
+  .bal-out li::before{content:"→";color:var(--ink)}
+  @media(max-width:760px){.balance{grid-template-columns:1fr}.bal-vs{text-align:center}}
+
+  /* ---------- ⑦ 专利 ---------- */
+  .patent{background:var(--panel)}
+  .patent-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;margin-top:48px}
+  .patent-cert{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:40px;position:relative;box-shadow:0 24px 60px -30px rgba(0,0,0,.28)}
+  .patent-cert .seal{width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);color:var(--gold-deep);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;text-align:center;line-height:1.2;margin-bottom:22px;letter-spacing:.02em}
+  .patent-cert .doc-t{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .patent-cert .doc-n{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3;margin-bottom:18px}
+  .patent-cert .row{display:flex;justify-content:space-between;padding:11px 0;border-top:1px solid var(--line);font-size:14px}
+  .patent-cert .row span{color:var(--muted)}
+  .patent-cert .row b{font-weight:700}
+  .patent-points{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:22px}
+  .patent-points li{display:flex;gap:14px;font-size:15px;line-height:1.6}
+  .patent-points .num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--gold-soft);color:var(--gold-deep);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  @media(max-width:860px){.patent-grid{grid-template-columns:1fr;gap:36px}}
+
+  /* ---------- ⑧ 系统重构 ---------- */
+  .system-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px}
+  .sys-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px 26px}
+  .sys-card .hd{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .sys-card .hd .idx{width:30px;height:30px;border-radius:9px;background:var(--ink);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .sys-card .hd h4{font-size:17px;font-weight:800}
+  .sys-card .variants{display:flex;flex-direction:column;gap:10px}
+  .variant{display:flex;align-items:center;gap:12px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .variant .box{flex-shrink:0;width:38px;height:30px;border-radius:6px;border:1.5px solid var(--gold);position:relative;background:var(--gold-soft)}
+  .variant .box i{position:absolute;background:var(--gold);border-radius:2px}
+  .variant .v-txt b{font-size:13.5px;font-weight:700;display:block}
+  .variant .v-txt span{font-size:12px;color:var(--muted)}
+  .scenarios{display:flex;gap:10px;flex-wrap:wrap;margin-top:36px;justify-content:center}
+  .scenarios .sc{font-size:14px;font-weight:700;background:var(--card);border:1px solid var(--line);padding:10px 20px;border-radius:100px;color:var(--ink)}
+  .scenarios .sc b{color:var(--gold-deep)}
+  @media(max-width:860px){.system-cols{grid-template-columns:1fr}}
+
+  /* ---------- ⑨ 价值 + 方法论 + 反思 ---------- */
+  .value{background:var(--ink);color:#fff}
+  .value .kicker{color:var(--gold)}
+  .value h2{color:#fff;margin-top:16px}
+  .data-board{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:52px}
+  .board{border-radius:var(--radius);padding:30px}
+  .board.verified{background:rgba(31,157,99,.1);border:1px solid rgba(31,157,99,.35)}
+  .board.projected{background:rgba(138,124,255,.1);border:1px solid rgba(138,124,255,.35)}
+  .board .b-hd{display:flex;align-items:center;gap:10px;margin-bottom:22px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .board.verified .b-hd{color:#4fd399}
+  .board.projected .b-hd{color:#b3a8ff}
+  .board .b-hd .d{width:9px;height:9px;border-radius:50%}
+  .board.verified .b-hd .d{background:#4fd399}
+  .board.projected .b-hd .d{background:#b3a8ff}
+  .data-list{display:flex;flex-direction:column;gap:16px}
+  .di{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.1)}
+  .di:last-child{border-bottom:none;padding-bottom:0}
+  .di .k{font-size:14.5px;color:rgba(255,255,255,.78)}
+  .di .v{font-size:22px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+  .board.verified .v{color:#4fd399}
+  .board.projected .v{color:#b3a8ff}
+  .di .v small{font-size:13px;font-weight:600;color:rgba(255,255,255,.5);margin-left:4px}
+  .compliance{margin-top:22px;font-size:12.5px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:8px}
+
+  .method{margin-top:80px}
+  .method h3{color:#fff;text-align:center;margin-bottom:44px}
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  .step{text-align:center}
+  .step .sn{font-family:var(--serif);font-style:italic;font-size:30px;color:var(--gold);font-weight:700}
+  .step .st{font-size:15px;font-weight:800;margin:10px 0 6px}
+  .step .sd{font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.5}
+  @media(max-width:860px){.data-board{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr;gap:26px}}
+
+  .reflect{margin-top:80px;text-align:center;max-width:820px;margin-left:auto;margin-right:auto}
+  .reflect .q{font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.8vw,30px);line-height:1.5;color:#fff}
+  .reflect .ecosystem{margin-top:34px;font-size:16px;color:rgba(255,255,255,.7);line-height:1.7;padding-top:30px;border-top:1px solid rgba(255,255,255,.14)}
+  .reflect .ecosystem b{color:var(--gold)}
+
+  /* ---------- Footer ---------- */
+  footer{text-align:center;padding:64px 0}
+  .foot-name{font-family:"Caveat",cursive;font-size:32px;font-weight:700}
+  .foot-tag{color:var(--muted);font-size:14.5px;margin-top:6px}
+  .foot-back{margin-top:26px}
+  .foot-back a{color:var(--gold);font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:8px}
+
+  /* ---------- Reveal ---------- */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- ============ 进度导航 ============ -->
+<header>
+  <div class="wrap">
+    <nav class="nav">
+      <a href="index.html" class="back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        返回作品集
+      </a>
+      <div class="title">语音厅布局系统</div>
+      <div class="chips">
+        <span class="chip">系统设计</span>
+        <span class="chip">2年主导</span>
+        <span class="chip">专利</span>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ ① Hero ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="span-tag reveal">
+      <b>2024.3 → 2026.4</b> · 四个阶段 · 多人语聊唯一设计师，独立主导 2 年
+    </div>
+    <h1 class="reveal">
+      把一个语音厅布局，<br>从<span class="g">能用的容器</span>，<br>做成一套<span class="g">可复用的空间系统</span>。
+    </h1>
+    <p class="sub reveal">
+      两年、四个阶段——从画界面，到定专利、立规范。这不是一次改版，
+      而是一个核心模块由我一路主导、越做越对的演化。
+    </p>
+    <div class="metrics reveal">
+      <div class="m">
+        <b>+1.9<small style="font-size:.5em">%</small></b>
+        <span>进房转化 20.35%→20.73%</span>
+        <span class="vf"><i class="vf-dot"></i>已验证</span>
+      </div>
+      <div class="m">
+        <b>+5.6<small style="font-size:.5em">%</small></b>
+        <span>付费转化 1.26%→1.33%</span>
+        <span class="vf"><i class="vf-dot"></i>已验证</span>
+      </div>
+      <div class="m">
+        <b>+900<small style="font-size:.5em">%</small></b>
+        <span>在线峰值 300→3000</span>
+        <span class="vf"><i class="vf-dot"></i>已验证</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ② 为什么放这个项目 ============ -->
+<section>
+  <div class="wrap">
+    <span class="kicker reveal">为什么放这个项目</span>
+    <h2 class="reveal" style="margin-top:18px;max-width:20ch">一个模块，我主导它一路进化。</h2>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg></div>
+        <h4>长期主导</h4>
+        <p>作为多人语聊业务唯一设计师，从 2024 到 2026 独立主导两年，见证并推动一个核心模块的完整生命周期。</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/></svg></div>
+        <h4>系统思维</h4>
+        <p>不满足于把单个界面画好，而是抽象出可复用的空间规则——让后续玩法在同一套系统里生长，不重复造轮子。</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V8l8-5 8 5v12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <h4>空间设计</h4>
+        <p>语音厅的核心命题是"人与内容如何在有限空间里共处"——把消费、沉浸、麦位信息在同一舞台上排布得恰到好处。</p>
+      </div>
+    </div>
+    <p class="why-note reveal">
+      这个案例代表我的"耐力"——不是灵光一现，而是把一件事扛住两年、越扛越对的能力。
+    </p>
+  </div>
+</section>
+
+<!-- ============ ③ 演化总览 ============ -->
+<section class="overview">
+  <div class="wrap">
+    <span class="kicker reveal">演化总览</span>
+    <h2 class="reveal" style="margin-top:18px;max-width:24ch">四个阶段，一条持续升维的曲线。</h2>
+    <p class="lead reveal" style="margin-top:16px">容器 → 沉浸舞台 → 专利 → 系统规范。认知层级每上一级，业务杠杆就更大一层。先看全景，再逐段深入。</p>
+    <div class="timeline reveal">
+      <div class="tl-row">
+        <div class="tl-step">
+          <div class="node"></div>
+          <div class="lvl">容器层</div>
+          <div class="when">2024.3</div>
+          <div class="name">① 基础布局</div>
+          <div class="desc">组件零散 → 统一舞台框架。让消费聚焦、功能可复用。</div>
+        </div>
+        <div class="tl-step">
+          <div class="node"></div>
+          <div class="lvl">体验层</div>
+          <div class="when">2024.11–2025.2</div>
+          <div class="name">② 放大舞台</div>
+          <div class="desc">平面承载不了虚拟形象 → 主咖放大布局，沉浸感爆发。</div>
+        </div>
+        <div class="tl-step">
+          <div class="node"></div>
+          <div class="lvl">资产层</div>
+          <div class="when">2025.2</div>
+          <div class="name">③ 专利/标准化</div>
+          <div class="desc">把设计创新固化成 IP，写进布局规范。</div>
+        </div>
+        <div class="tl-step">
+          <div class="node"></div>
+          <div class="lvl">系统层</div>
+          <div class="when">2026.4</div>
+          <div class="name">④ 泛多人系统</div>
+          <div class="desc">三板块 + 多尺寸 + 多结构，覆盖全场景玩法。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ④ 阶段一 ============ -->
+<section>
+  <div class="wrap stage reveal">
+    <div class="s-text">
+      <div class="stage-label"><span class="n stage-num">01</span><span class="t">容器层 · 2024.3</span></div>
+      <h3>起点：从一堆组件，到一个舞台。</h3>
+      <p class="desc">最早的语音厅是组件的堆叠——字幕、金主位、麦位各自为战，空间利用低效，用户的注意力和消费都不聚焦。第一步不是加功能，而是先建一个"容器"。</p>
+      <div class="prob-sol">
+        <div class="ps-item"><span class="tag p">问题</span><span>组件零散、空间低效、消费不聚焦。</span></div>
+        <div class="ps-item"><span class="tag s">方案</span><span>统一舞台框架：字幕 / 金主位 / 双咖，并预留玩法扩展位（心愿瓶、你点我唱）。</span></div>
+      </div>
+      <div class="payoff">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 17l6-6 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="txt"><b>换来的回报 · 效率与成本</b><p>消费视线更聚焦；后续功能在扩展位里复用，不再重复开发。</p></span>
+      </div>
+      <p style="margin-top:22px;font-size:14px;color:var(--muted)"><b style="color:var(--gold-deep)">认知锚点：</b>布局的本质，是一个能持续生长的容器。</p>
+    </div>
+    <div class="mock">
+      <div class="frame">
+        <div class="rm subtitle lbl">字幕条</div>
+        <div class="rm host" style="width:30%;top:24%"></div>
+        <div class="rm mic" style="top:26%;left:14%"></div>
+        <div class="rm mic" style="top:26%;right:14%"></div>
+        <div class="rm mic" style="top:46%;left:22%"></div>
+        <div class="rm mic" style="top:46%;right:22%"></div>
+        <div class="rm gift lbl">心愿瓶</div>
+        <div class="rm slot lbl">你点我唱</div>
+      </div>
+      <div class="cap">① 统一舞台框架 · 金主位居中 + 麦位环绕 + 玩法扩展位（线框示意）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ⑤ 阶段二 放大舞台（视觉高潮）============ -->
+<section style="background:var(--panel)">
+  <div class="wrap stage rev reveal">
+    <div class="s-text">
+      <div class="stage-label"><span class="n stage-num">02</span><span class="t">体验层 · 2024.11–2025.2 · 价值爆发点</span></div>
+      <h3>放大舞台：让主咖真正"站上台"。</h3>
+      <p class="desc">2D 立绘、3D 虚拟形象来了，平面布局承载不住新的内容形态，主咖的沉浸感也不足。这一版把主咖舞台区放大，重构垂直层级，让虚拟形象、声波、投流都有了自己的舞台。</p>
+      <div class="prob-sol">
+        <div class="ps-item"><span class="tag p">问题</span><span>平面布局无法承载 2D/3D 虚拟形象，主咖沉浸感不足。</span></div>
+        <div class="ps-item"><span class="tag s">方案</span><span>主咖放大布局：半透明渐变背景 / 垂直内容层级 / 右侧等距麦位 / 2D 立绘·3D 投流·声波 /「互动形象」入口与"你点我唱"互通。</span></div>
+      </div>
+      <div class="payoff">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+        <span class="txt"><b>换来的回报 · 增量爆发</b><p>拓宽了 2D/3D 内容形态；带动开播与营收增量（<span style="color:var(--projected);font-weight:700">预计</span>），看播渗透 <b style="color:var(--projected)">+0.2%</b>。</p></span>
+      </div>
+    </div>
+    <div class="mock">
+      <div class="frame">
+        <div class="rm wave"></div>
+        <div class="rm host"></div>
+        <div class="rm subtitle lbl" style="top:4%">半透明渐变背景 · 声波</div>
+        <div class="rm mic" style="top:60%;right:10%"></div>
+        <div class="rm mic" style="top:74%;right:10%"></div>
+        <div class="rm mic" style="top:88%;right:10%"></div>
+        <div class="rm slot lbl" style="bottom:8%;left:8%;width:32%">互动形象入口</div>
+      </div>
+      <div class="cap">② 主咖放大 · 垂直层级 + 右侧等距麦位 + 虚拟形象舞台（线框示意）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ⑥ 核心决策 ============ -->
+<section class="decision">
+  <div class="wrap">
+    <span class="kicker reveal">核心决策</span>
+    <h2 class="reveal">主咖区从 30% 放大到 70%——<br>放大的不是尺寸，是取舍。</h2>
+    <p class="quote reveal">"每多给主咖一寸沉浸，就少给麦位一寸信息。这一版的判断，是想清楚了这一寸该给谁。"</p>
+    <div class="balance reveal">
+      <div class="bal-card">
+        <h4>如果不放大</h4>
+        <ul>
+          <li>麦位信息完整、一眼看全</li>
+          <li>但主咖淹没在网格里，虚拟形象没有舞台</li>
+          <li>新内容形态（2D/3D）无处安放</li>
+        </ul>
+      </div>
+      <div class="bal-vs">vs</div>
+      <div class="bal-card bal-out">
+        <h4>放大到 70% 之后</h4>
+        <ul>
+          <li>主咖沉浸感与内容表现力大幅提升</li>
+          <li>麦位收进右侧等距列，用密度换清晰</li>
+          <li>为虚拟形象、声波、投流腾出主舞台</li>
+        </ul>
+      </div>
+    </div>
+    <p class="reveal" style="margin-top:36px;color:rgba(255,255,255,.6);font-size:15px;max-width:60ch">
+      资深与执行的分水岭，往往不在"做得多好看"，而在"敢不敢在冲突处做减法，并说清楚为什么"。
+    </p>
+  </div>
+</section>
+
+<!-- ============ ⑦ 专利 / 标准化 ============ -->
+<section class="patent">
+  <div class="wrap">
+    <span class="kicker reveal">从"做方案"到"定标准"</span>
+    <h2 class="reveal" style="margin-top:18px;max-width:22ch">当一个方案好到值得被固化。</h2>
+    <p class="lead reveal" style="margin-top:16px">放大舞台的设计创新，不止停在一次上线——它被固化成了公司资产：一份外观设计专利，和一份写进规范的布局标准。重点不是"发明了什么"，而是"这套东西好到值得成为别人做新玩法的地基"。</p>
+    <div class="patent-grid">
+      <div class="patent-cert reveal">
+        <div class="seal">外观设计<br>专利</div>
+        <div class="doc-t">专利申请交底书</div>
+        <div class="doc-n">语音聊天室舞台区布局放大</div>
+        <div class="row"><span>类型</span><b>外观设计专利申请</b></div>
+        <div class="row"><span>角色</span><b>第一发明人</b></div>
+        <div class="row"><span>提交时间</span><b>2025.2</b></div>
+        <div class="row"><span>关联文档</span><b>《放大舞台布局设计文档》</b></div>
+      </div>
+      <div class="reveal">
+        <h3 style="margin-bottom:8px">四个要点，写进了《泛多人语音厅布局规范》</h3>
+        <p style="color:var(--muted);font-size:15px;margin-bottom:8px">专利的价值，是把一次性的设计判断，变成团队可反复调用的规则。</p>
+        <ul class="patent-points">
+          <li><span class="num">1</span><span>主咖舞台区放大的比例与层级关系。</span></li>
+          <li><span class="num">2</span><span>虚拟形象、声波、投流在垂直空间的排布逻辑。</span></li>
+          <li><span class="num">3</span><span>麦位在放大布局下的等距适配规则。</span></li>
+          <li><span class="num">4</span><span>「互动形象」入口与玩法（你点我唱）的互通机制。</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ⑧ 系统重构（系统思维最强证据）============ -->
+<section>
+  <div class="wrap">
+    <span class="kicker reveal">系统重构</span>
+    <h2 class="reveal" style="margin-top:18px;max-width:26ch">从"一个布局"，到"一套能长出所有布局的系统"。</h2>
+    <p class="lead reveal" style="margin-top:16px">2026 年，玩法越来越多——3v3、1v8、2v8……组合混乱、模块难复用、麦位规格庞杂。这一版不再画某一个界面，而是抽象出一套三板块结构，让任意场景都能从同一套规则里拼出来。</p>
+    <div class="system-cols">
+      <div class="sys-card reveal">
+        <div class="hd"><span class="idx">A</span><h4>三大板块</h4></div>
+        <div class="variants">
+          <div class="variant"><span class="box"><i style="top:4px;left:4px;right:4px;height:5px"></i></span><span class="v-txt"><b>玩法信息条</b><span>顶部 · 状态与玩法入口</span></span></div>
+          <div class="variant"><span class="box"><i style="top:10px;left:11px;width:16px;height:12px;border-radius:50%"></i></span><span class="v-txt"><b>主舞台</b><span>中部 · 沉浸与消费核心</span></span></div>
+          <div class="variant"><span class="box"><i style="bottom:4px;left:4px;width:8px;height:8px;border-radius:50%"></i><i style="bottom:4px;left:15px;width:8px;height:8px;border-radius:50%"></i><i style="bottom:4px;left:26px;width:8px;height:8px;border-radius:50%"></i></span><span class="v-txt"><b>麦位区</b><span>下部 · 多结构自适应</span></span></div>
+        </div>
+      </div>
+      <div class="sys-card reveal">
+        <div class="hd"><span class="idx">B</span><h4>主舞台 · 三尺寸</h4></div>
+        <div class="variants">
+          <div class="variant"><span class="box"><i style="top:9px;left:15px;width:8px;height:8px;border-radius:50%"></i></span><span class="v-txt"><b>标准</b><span>常规多人语聊</span></span></div>
+          <div class="variant"><span class="box"><i style="top:6px;left:12px;width:14px;height:14px;border-radius:50%"></i></span><span class="v-txt"><b>放大</b><span>主咖沉浸场景</span></span></div>
+          <div class="variant"><span class="box"><i style="top:4px;left:6px;right:6px;bottom:4px;border-radius:5px"></i></span><span class="v-txt"><b>全屏</b><span>虚拟演唱会等重内容</span></span></div>
+        </div>
+      </div>
+      <div class="sys-card reveal">
+        <div class="hd"><span class="idx">C</span><h4>麦位 · 四结构</h4></div>
+        <div class="variants">
+          <div class="variant"><span class="box"><i style="top:12px;left:4px;width:6px;height:6px;border-radius:50%"></i><i style="top:12px;left:12px;width:6px;height:6px;border-radius:50%"></i><i style="top:12px;left:20px;width:6px;height:6px;border-radius:50%"></i></span><span class="v-txt"><b>三层平铺 / 紧凑</b><span>多人高密度</span></span></div>
+          <div class="variant"><span class="box"><i style="top:7px;left:8px;width:6px;height:6px;border-radius:50%"></i><i style="top:16px;left:8px;width:6px;height:6px;border-radius:50%"></i></span><span class="v-txt"><b>双层</b><span>中等人数</span></span></div>
+          <div class="variant"><span class="box"><i style="top:11px;left:5px;width:6px;height:6px;border-radius:50%"></i><i style="top:11px;right:5px;width:6px;height:6px;border-radius:50%"></i></span><span class="v-txt"><b>左右 / 对阵</b><span>3v3 · 2v8 等</span></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="scenarios reveal">
+      <span class="sc" style="align-self:center;color:var(--muted);border:none;background:transparent">同一套系统，拼出全场景：</span>
+      <span class="sc"><b>3v3</b> 对阵</span>
+      <span class="sc"><b>1v8</b> 主咖</span>
+      <span class="sc"><b>2v8</b> 混合</span>
+      <span class="sc">未来玩法 <b>即插即用</b></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ⑨ 价值 + 方法论 + 反思 ============ -->
+<section class="value">
+  <div class="wrap">
+    <span class="kicker reveal">价值与沉淀</span>
+    <h2 class="reveal">两年主导，换来的东西。</h2>
+
+    <!-- 数据看板：已验证 / 预计 分区 -->
+    <div class="data-board">
+      <div class="board verified reveal">
+        <div class="b-hd"><span class="d"></span>已验证 · 作为结论</div>
+        <div class="data-list">
+          <div class="di"><span class="k">进房转化 20.35%→20.73%</span><span class="v">+1.9%</span></div>
+          <div class="di"><span class="k">付费转化 1.26%→1.33%</span><span class="v">+5.6%</span></div>
+          <div class="di"><span class="k">在线峰值 300→3000</span><span class="v">+900%</span></div>
+          <div class="di"><span class="k">跨房日营收</span><span class="v">+6.7%</span></div>
+          <div class="di"><span class="k">虚拟形象 PV-CTR</span><span class="v">+27.2%</span></div>
+          <div class="di"><span class="k">付费 UV</span><span class="v">+9.9%</span></div>
+        </div>
+      </div>
+      <div class="board projected reveal">
+        <div class="b-hd"><span class="d"></span>预计 · 作为预期收益</div>
+        <div class="data-list">
+          <div class="di"><span class="k">看播渗透</span><span class="v">+0.2% <small>预计</small></span></div>
+          <div class="di"><span class="k">语聊场景日营收</span><span class="v" style="font-size:16px">显著增长 <small>预计</small></span></div>
+          <div class="di"><span class="k">大盘 + 语聊场景开播量</span><span class="v" style="font-size:16px">双增长 <small>预计</small></span></div>
+        </div>
+        <div class="compliance">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          为符合保密要求，本图不含具体营收金额
+        </div>
+      </div>
+    </div>
+
+    <!-- 方法论 5 步 -->
+    <div class="method">
+      <h3 class="reveal">我主导核心模块的 5 步框架</h3>
+      <div class="steps reveal">
+        <div class="step"><div class="sn">01</div><div class="st">建容器</div><div class="sd">先立一个能生长的框架，而不是急着加功能。</div></div>
+        <div class="step"><div class="sn">02</div><div class="st">找爆点</div><div class="sd">在体验层找到最能撬动增量的那一处，重点放大。</div></div>
+        <div class="step"><div class="sn">03</div><div class="st">做取舍</div><div class="sd">在冲突处敢做减法，并说清判断依据。</div></div>
+        <div class="step"><div class="sn">04</div><div class="st">沉资产</div><div class="sd">把好方案固化成专利与规范，让创新可复用。</div></div>
+        <div class="step"><div class="sn">05</div><div class="st">升系统</div><div class="sd">抽象成一套规则，让未来玩法即插即用。</div></div>
+      </div>
+    </div>
+
+    <!-- 反思 + 生态收尾 -->
+    <div class="reflect">
+      <p class="q reveal">"如果重来，我会更早开始沉淀标准——很多重复开发，是因为规则来得太晚。"</p>
+      <p class="ecosystem reveal">
+        这套布局系统现在成了后续玩法（<b>AI 互动、虚拟演唱会、品牌合作</b>）的底层框架——
+        我做的一版布局，变成了别人做新玩法的地基。<br>从画界面，到定标准。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Footer ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-name">Xinyue Pan</div>
+    <div class="foot-tag">系统 · 空间 · 长期主导</div>
+    <div class="foot-back"><a href="index.html">← 返回作品集</a></div>
+  </div>
+</footer>
+
+<script>
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
