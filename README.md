@@ -18,54 +18,8 @@ photos/                        照片集的照片（g1.jpg … g9.jpg）
 
 ---
 
-## 修了什么
-
-**入口与死链**
-- 新建 `index.html`（原 `paul-style-replica.html`）。此前没有 index，静态托管打开根路径是 404，
-  案例页两处「返回作品集」也因此是死链。
-
-**碎图**
-- `7d91d17` 删掉的 `hero.png` 和 `avatar.jpg` 其实都在用（About 个人照、gallery 灵动岛头像），
-  已由 `hero-photo.jpg` 派生方图补回。
-
-**照片集**
-- `g1–g9.jpg` 从未提交过，整本翻页书是空的。改为自动探测实际存在的照片：
-  放进 `photos/` 就出现，缺失自动跳过，一张都没有时显示占位页。
-  现放了 2 张占位图方便看翻页效果。
-- 修了一个类名冲突：返回按钮原来叫 `.back`，会命中翻页书页面背面的 `.face.back`，
-  导致每张背面页被套上按钮的 `position:fixed` / 100px 圆角 / `text-transform:uppercase`。
-  按钮改名 `.backlink`。
-
-**字体**
-- 原来依赖 `fonts.googleapis.com`，国内不可达 —— 导航栏手写体名字、正文、gallery
-  全站字体都会掉回系统默认。改为自托管子集化 woff2（OFL 允许），424 KB → 65 KB。
-  中文由系统 PingFang SC 渲染，不走 webfont。
-
-**体积**
-- 首页图片 6.9 MB（其中 `project-three.gif` 单个 5.8 MB）→ 相关图片转 webp。
-
-**鲁棒性**
-- 入场动画原本是内容默认 `opacity:0` + IntersectionObserver 揭示，IO 不触发就是整页空白。
-  现在动画只在 `<html class="js">` 时启用（这个 class 由 `motion.js` 自己加），
-  并有 `setTimeout(revealAll, 3000)` 兜底。
-
-**其他**
-- 补 favicon 和 OG 标签（分享到微信/LinkedIn 原来是白卡）。
-
----
-
-## 已知问题（未处理，等本人决定）
-
-- **Contact 表单是假的**：`onsubmit="return false"`，点「Send message」没有任何反应。
-- **社交链接**都是 `href="#"`。
-- **导航里的语言切换器**（中国国旗那个）没绑任何事件，纯装饰。
-- **About / FAQ 里的 `【Placeholder】`** 尚未替换。
-- **四张 project 图不是本人作品**：是原模板自带的填充素材，其中 `project-one.jpg`
-  带着别人的品牌名 "ADOM Mobile Banking App"，`project-four.webp` 是另一套拳击 App 的稿子。
-  仓库是公开的。要删的话：
-  ```bash
-  git rm project-one.jpg project-two.png project-three.gif project-four.webp
-  ```
+> **改动清单见 [CHANGES.md](CHANGES.md)** —— 逐条交代了每个文件改了什么、为什么，
+> 以及哪些没动、哪些等你决定。
 
 ---
 
