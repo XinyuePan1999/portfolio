@@ -2,11 +2,15 @@
 
 纯静态站点，零依赖、零构建、零外部网络请求。改完直接推，GitHub Pages 就是最新的。
 
+> **这个仓库现在的状态**：首页是一个**做好的骨架**——版式、动效、交互、响应式都完成了，
+> **文字和作品内容全部留成空位**，等你自己填。
+> 案例页 `case-voice-layout.html` 是你原来写的，内容一个字没动，只做了技术层修复。
+
 ## 目录结构
 
 ```
-index.html                 首页
-case-voice-layout.html     主案例：语音厅布局系统
+index.html                 首页（骨架，待填内容）
+case-voice-layout.html     你的案例页（内容原样保留）
 gallery.html               照片集（3D 翻页书）
 
 assets/
@@ -38,35 +42,33 @@ python3 -m http.server 5180
 
 ---
 
-## ⚠️ 发出去之前必须做的三件事
+## 怎么填首页
 
-页面现在是**草稿模式**——`index.html` 的 `<body class="draft">` 会显示一条黑色提示条，
-以及若干黄色虚线框，圈出所有「我没法替你确认的内容」。
+首页现在是**骨架模式**：`<body class="draft">` 时，顶部有一条黑色提示条，
+所有待填的地方都被黄色虚线框圈出来，右上角挂着标签写明这里该放什么。
 
-### 1. 改掉三处草稿内容
+一共 10 个空位：
 
-| 位置 | 现在是什么 | 要改成 |
-|---|---|---|
-| 关于（About） | 两段代写的自我介绍 | 你自己的话。现在这两段只是基于案例页内容推出来的，**语气和事实都要你自己核一遍** |
-| 联系（Contact） | `你的邮箱@example.com` / `你的微信号` / 作品平台链接 | 真实联系方式 |
-| 案例 02 / 03 / 04 | 三个「案例整理中」占位卡 | 真实案例，或直接删掉这一整块 `<div class="wrap soon-grid ...">` |
+| 位置 | 放什么 |
+|---|---|
+| Hero 自我定位 | 你的名字 + 角色，一到两行定位 |
+| 案例区主标题 + 引导语 | 你想让人从这些案例里看到什么 |
+| 主案例大卡 | 封面图 / 标签 / 标题 / 简介 / 三个指标；`href` 指向案例详情页 |
+| 次级案例位 ×3 | 其余案例，不够就删，三栏改两栏不影响版式 |
+| 关于 | 标题 + 两段自我介绍 |
+| 能力区主标题 + 引导语 | — |
+| 能力三张卡 | 中间那张是黄底高亮款，`hl` 这个 class 挪到哪张哪张就高亮 |
+| 联系招呼语 | — |
+| 联系方式 | 邮箱 / 微信 / 作品平台，点"复制"能一键复制 |
+| 页脚签名 | 三个词概括自己 |
 
-### 2. 确认无误后关掉草稿模式
+填完之后两件事：
 
-把 `index.html` 里的 `<body class="draft">` 改成 `<body>`。
-黑色提示条和所有黄色虚线框会一起消失。**这一步不做就别发出去。**
+1. 把每个空位里的**灰字说明**（`class="hint"` 的那些）删掉
+2. 把 `<body class="draft">` 改成 `<body>` —— 虚线框、标签、顶部提示条一起消失
 
-### 3. 处理仓库里那四张模板自带的图
-
-`project-one.jpg`、`project-two.png`、`project-three.gif`、`project-four.webp`
-是原来那套模板自带的填充素材，不是你的作品——其中 `project-one` 带着别人的品牌名
-"ADOM Mobile Banking App"，`project-four` 是另一套拳击 App 的稿子。
-
-页面已经全部不再引用它们，但**文件还在公开仓库里**。建议删掉：
-
-```bash
-git rm project-one.jpg project-two.png project-three.gif project-four.webp
-```
+主案例卡的封面现在是一个**会动的抽象图形**（呼吸的圆 + 扩散的环 + 依次点亮的点）占着位，
+换成你的项目图时，把 `.cover-slot` 里那段 `<div class="motif">` 换成 `<img>` 即可。
 
 ---
 
@@ -76,14 +78,13 @@ git rm project-one.jpg project-two.png project-three.gif project-four.webp
 一张都没有就显示「整理中」占位页。不会出现碎图。
 
 现在 `photos/` 里放了 2 张占位图，方便你直接看翻页效果。
-把它们换成你自己的照片即可（保持文件名 `g1.jpg` / `g2.jpg`），
-或者继续往下加 `g3.jpg` … `g9.jpg`。
+换成你自己的照片即可（保持文件名 `g1.jpg` / `g2.jpg`），或继续加 `g3.jpg` … `g9.jpg`。
 
-想改每页的标题和年份，编辑 `gallery.html` 里的 `PHOTOS` 数组：
+改每页的标题和年份，编辑 `gallery.html` 里的 `PHOTOS` 数组：
 
 ```js
 const PHOTOS = [
-  {src:'photos/g1.jpg', t:'Maldives', yr:'2023'},
+  {src:'photos/g1.jpg', t:'标题', yr:'2026'},
   // 继续追加即可，文件不存在的会被自动跳过
 ];
 ```
@@ -92,8 +93,7 @@ const PHOTOS = [
 
 ## 动效怎么用
 
-动效全部通过 HTML 上的 `data-*` 属性声明，**不用写 JS**。
-在任意元素上加属性即可：
+动效全部通过 HTML 上的 `data-*` 属性声明，**不用写 JS**。在任意元素上加属性即可：
 
 | 属性 | 效果 |
 |---|---|
@@ -111,12 +111,25 @@ const PHOTOS = [
 
 1. **关掉 JS，内容必须完整可读。** 动画只在 `<html class="js">` 时启用，
    而这个 class 是 `motion.js` 自己加的。
-2. **`prefers-reduced-motion` 一律降级。** 系统开了「减少动态效果」，
-   所有动效自动关掉，只留内容。
-3. **不做无人观看的动画。** 首页那个语音厅舞台只在进入视口时播放，滚走就停。
+2. **`prefers-reduced-motion` 一律降级。** 系统开了「减少动态效果」，所有动效自动关掉。
+3. **不做无人观看的动画。** 会动的封面只在进入视口时播放，滚走就停。
 
 跨页跳转用了 View Transitions API（Chrome / Edge 支持），
 不支持的浏览器完全无感，就是普通跳转。
+
+---
+
+## 待处理：仓库里那四张模板自带的图
+
+`project-one.jpg`、`project-two.png`、`project-three.gif`、`project-four.webp`
+是原来那套模板自带的填充素材，不是你的作品——其中 `project-one` 带着别人的品牌名
+"ADOM Mobile Banking App"，`project-four` 是另一套拳击 App 的稿子。
+
+页面已经全部不再引用它们，但**文件还在公开仓库里**。建议删掉：
+
+```bash
+git rm project-one.jpg project-two.png project-three.gif project-four.webp
+```
 
 ---
 
@@ -133,10 +146,7 @@ const PHOTOS = [
 正文、gallery 全站字体都会掉回系统默认，而且还要先等 preconnect 超时。
 中文由系统 PingFang SC 渲染，不走 webfont。
 
-**页面重量**：首屏约 122 KB，滚动后再加 45 KB。
-
-**案例页没有产品截图是刻意的**——用 CSS 线框示意代替，规避脱敏风险。
-首页主案例卡片的封面（会呼吸的那个语音厅舞台）也是同一套线框语言画的，保持一致。
+**页面重量**：首屏约 140 KB，滚动后再加 45 KB。（改造前光首页图片就 6.9 MB。）
 
 **六个容易踩的坑**（都已经修了，别改回去）：
 
@@ -162,6 +172,8 @@ const PHOTOS = [
 ---
 
 ## 部署到 GitHub Pages
+
+内容填完、关掉骨架模式之后再开：
 
 仓库 → Settings → Pages → Source 选 `Deploy from a branch` → 分支 `main` / 目录 `/ (root)` → Save。
 
